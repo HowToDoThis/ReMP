@@ -47,12 +47,6 @@
 #include <deque>
 #include <functional>
 
-// enable SSE code only if it's enabled in compiler options
-#if (defined(REHLDS_SSE) || defined(REGAMEDLL_SSE)) && (defined(__SSE__) || defined(__SSE2__) || defined(_M_IX86_FP) || defined(_M_AMD64) || defined(_M_X64))
-	// #error "SSE enabled"
-	#define HAVE_SSE
-#endif
-
 #ifdef _WIN32 // WINDOWS
 	#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers
 	#include <windows.h>
@@ -65,27 +59,6 @@
 	#include <sys/types.h>
 	#include <sys/stat.h>
 	#include <io.h>
-#else // _WIN32
-	#include <arpa/inet.h>
-	#include <ctype.h>
-	//#include <dirent.h>
-	#include <dlfcn.h>
-	#include <elf.h>
-	#include <errno.h>
-	#include <fcntl.h>
-	#include <limits.h>
-	#include <link.h>
-	#include <netdb.h>
-	#include <netinet/in.h>
-	#include <pthread.h>
-	#include <sys/ioctl.h>
-	#include <sys/mman.h>
-	#include <sys/socket.h>
-	#include <sys/stat.h>
-	#include <sys/time.h>
-	#include <sys/types.h>
-	#include <sys/sysinfo.h>
-	#include <unistd.h>
 #endif // _WIN32
 
 #include <string>
@@ -93,10 +66,9 @@
 #include <fstream>
 #include <iomanip>
 
-#ifdef HAVE_SSE
+// SSE
 #include <smmintrin.h>
 #include <xmmintrin.h>
-#endif // HAVE_SSE
 
 #ifdef _WIN32 // WINDOWS
 	// Define __func__ on VS less than 2015
@@ -109,9 +81,6 @@
 	#define _CRT_SECURE_NO_WARNINGS
 	#define WIN32_LEAN_AND_MEAN
 
-	#ifndef CDECL
-		#define CDECL __cdecl
-	#endif
 	#define FASTCALL __fastcall
 	#define STDCALL __stdcall
 	#define HIDDEN
@@ -143,83 +112,7 @@
 	inline void sys_freemem(void* ptr, unsigned int size) {
 		VirtualFree(ptr, 0, MEM_RELEASE);
 	}
-#else // _WIN32
-	#ifndef PAGESIZE
-		#define PAGESIZE 4096
-	#endif
-	#define ALIGN(addr) (size_t)((size_t)addr & ~(PAGESIZE-1))
-	#define ARRAYSIZE(p) (sizeof(p)/sizeof(p[0]))
-
-	#define _MAX_FNAME NAME_MAX
-	#define MAX_PATH 260
-
-	typedef void *HWND;
-
-	typedef unsigned long DWORD;
-	typedef unsigned short WORD;
-	typedef unsigned int UNINT32;
-
-	#define FASTCALL
-	#define __FUNC__ __func__
-	#define CDECL __attribute__ ((cdecl))
-	#define STDCALL __attribute__ ((stdcall))
-	#define HIDDEN __attribute__((visibility("hidden")))
-	#define FORCEINLINE inline
-	#define NOINLINE __attribute__((noinline))
-	#define ALIGN16 __attribute__((aligned(16)))
-	#define NORETURN __attribute__((noreturn))
-	#define FORCE_STACK_ALIGN __attribute__((force_align_arg_pointer))
-
-#if defined __INTEL_COMPILER
-	#define FUNC_TARGET(x)
-
-	#define __builtin_bswap16 _bswap16
-	#define __builtin_bswap32 _bswap
-	#define __builtin_bswap64 _bswap64
-#else
-	#define FUNC_TARGET(x) __attribute__((target(x)))
-#endif // __INTEL_COMPILER
-
-	//inline bool SOCKET_FIONBIO(SOCKET s, int m) { return (ioctl(s, FIONBIO, (int*)&m) == 0); }
-	//inline int SOCKET_MSGLEN(SOCKET s, u_long& r) { return ioctl(s, FIONREAD, (int*)&r); }
-	typedef int SOCKET;
-	#define INVALID_SOCKET (SOCKET)(~0)
-	#define SOCKET_FIONBIO(s, m) ioctl(s, FIONBIO, (char*)&m)
-	#define SOCKET_MSGLEN(s, r) ioctl(s, FIONREAD, (char*)&r)
-	#define SIN_GET_ADDR(saddr, r) r = (saddr)->s_addr
-	#define SIN_SET_ADDR(saddr, r) (saddr)->s_addr = (r)
-	#define SOCKET_CLOSE(s) close(s)
-	#define SOCKET_AGAIN() (errno == EAGAIN)
-	#define SOCKET_ERROR -1
-
-	inline int ioctlsocket(int fd, int cmd, unsigned int *argp) { return ioctl(fd, cmd, argp); }
-	inline int closesocket(int fd) { return close(fd); }
-	inline int WSAGetLastError() { return errno; }
-
-	inline void* sys_allocmem(unsigned int size) {
-		return mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	}
-	inline void sys_freemem(void* ptr, unsigned int size) {
-		munmap(ptr, size);
-	}
-
-	#define WSAENOPROTOOPT ENOPROTOOPT
-
-	#ifndef FALSE
-	#define FALSE	0
-	#endif
-	#ifndef TRUE
-	#define TRUE	1
-	#endif
 #endif // _WIN32
-
-#ifdef _WIN32
-	static const bool __isWindows = true;
-	static const bool __isLinux = false;
-#else
-	static const bool __isWindows = false;
-	static const bool __isLinux = true;
-#endif
 
 #define EXT_FUNC FORCE_STACK_ALIGN
 
