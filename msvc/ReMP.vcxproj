@@ -56,7 +56,7 @@
       <SDLCheck>
       </SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;..\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -168,11 +168,19 @@
     <ClInclude Include="..\common\weaponinfo.h" />
     <ClInclude Include="..\common\winsani_in.h" />
     <ClInclude Include="..\common\winsani_out.h" />
+    <ClInclude Include="..\dlls\cbase.h" />
     <ClInclude Include="..\dlls\cdll_dll.h" />
+    <ClInclude Include="..\dlls\ehandle.h" />
     <ClInclude Include="..\dlls\enginecallback.h" />
     <ClInclude Include="..\dlls\extdef.h" />
     <ClInclude Include="..\dlls\extdll.h" />
+    <ClInclude Include="..\dlls\globals.h" />
+    <ClInclude Include="..\dlls\monsterevent.h" />
     <ClInclude Include="..\dlls\qstring.h" />
+    <ClInclude Include="..\dlls\remp_const.h" />
+    <ClInclude Include="..\dlls\saverestore.h" />
+    <ClInclude Include="..\dlls\scriptevent.h" />
+    <ClInclude Include="..\dlls\util.h" />
     <ClInclude Include="..\dlls\vector.h" />
     <ClInclude Include="..\engine\anorms.h" />
     <ClInclude Include="..\engine\APIProxy.h" />

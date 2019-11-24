@@ -371,5 +371,29 @@
     <ClInclude Include="..\dlls\extdef.h">
       <Filter>dlls</Filter>
     </ClInclude>
+    <ClInclude Include="..\dlls\util.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\cbase.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\saverestore.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\scriptevent.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\monsterevent.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\remp_const.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\globals.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dlls\ehandle.h">
+      <Filter>dlls</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
