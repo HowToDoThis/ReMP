@@ -26,34 +26,35 @@
 *
 */
 
-#ifndef SHAKE_H
-#define SHAKE_H
+#ifndef CMD_H
+#define CMD_H
 #ifdef _WIN32
 #pragma once
 #endif
 
-// This structure is sent over the net to describe a screen shake event
-typedef struct
+#define FCMD_HUD_COMMAND		BIT(0)
+#define FCMD_GAME_COMMAND		BIT(1)
+#define FCMD_WRAPPER_COMMAND		BIT(2)
+
+/* <8f1> ../engine/cmd.h:65 */
+typedef void (*xcommand_t)(void);
+
+/* <904> ../engine/cmd.h:71 */
+typedef struct cmd_function_s
 {
-	unsigned short amplitude;		// FIXED 4.12 amount of shake
-	unsigned short duration;		// FIXED 4.12 seconds duration
-	unsigned short frequency;		// FIXED 8.8 noise frequency (low frequency is a jerk,high frequency is a rumble)
+	struct cmd_function_s *next;
+	char *name;
+	xcommand_t function;
+	int flags;
 
-} ScreenShake;
+} cmd_function_t;
 
-#define FFADE_IN		0x0000		// Just here so we don't pass 0 into the function
-#define FFADE_OUT		0x0001		// Fade out (not in)
-#define FFADE_MODULATE		0x0002		// Modulate (don't blend)
-#define FFADE_STAYOUT		0x0004		// ignores the duration, stays faded out until new ScreenFade message received
-
-// This structure is sent over the net to describe a screen fade event
-typedef struct
+/* <95a> ../engine/cmd.h:80 */
+typedef enum cmd_source_s
 {
-	unsigned short duration;		// FIXED 4.12 seconds duration
-	unsigned short holdTime;		// FIXED 4.12 seconds duration until reset (fade & hold)
-	short fadeFlags;			// flags
-	byte r,g,b,a;				// fade to color ( max alpha )
+	src_client = 0,		// came in over a net connection as a clc_stringcmd. host_client will be valid during this state.
+	src_command = 1,	// from the command buffer.
 
-} ScreenFade;
+} cmd_source_t;
 
-#endif // SHAKE_H
+#endif // CMD_H

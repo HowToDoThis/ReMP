@@ -56,7 +56,7 @@
       <SDLCheck>
       </SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>..\;common;dlls;engine;pm_shared;public;remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <SupportJustMyCode>false</SupportJustMyCode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -84,7 +84,7 @@
       </SDLCheck>
       <ConformanceMode>
       </ConformanceMode>
-      <AdditionalIncludeDirectories>..\;common;dlls;engine;pm_shared;public;remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
@@ -112,7 +112,25 @@
   <ItemGroup>
     <ClCompile Include="..\common\interface.cpp" />
     <ClCompile Include="..\common\parsemsg.cpp" />
-    <ClCompile Include="Temp.cpp" />
+    <ClCompile Include="..\pm_shared\pm_debug.cpp" />
+    <ClCompile Include="..\pm_shared\pm_math.cpp" />
+    <ClCompile Include="..\pm_shared\pm_shared.cpp" />
+    <ClCompile Include="..\public\FileSystem.cpp" />
+    <ClCompile Include="..\public\interface.cpp" />
+    <ClCompile Include="..\public\MemPool.cpp" />
+    <ClCompile Include="..\public\tier0\dbg.cpp" />
+    <ClCompile Include="..\public\utlbuffer.cpp" />
+    <ClCompile Include="..\public\utlsymbol.cpp" />
+    <ClCompile Include="..\shared\bot\bot.cpp" />
+    <ClCompile Include="..\shared\bot\bot_manager.cpp" />
+    <ClCompile Include="..\shared\bot\bot_profile.cpp" />
+    <ClCompile Include="..\shared\bot\bot_util.cpp" />
+    <ClCompile Include="..\shared\bot\nav_area.cpp" />
+    <ClCompile Include="..\shared\bot\nav_file.cpp" />
+    <ClCompile Include="..\shared\bot\nav_node.cpp" />
+    <ClCompile Include="..\shared\bot\nav_path.cpp" />
+    <ClCompile Include="..\shared\shared_util.cpp" />
+    <ClCompile Include="..\shared\voice_gamemgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\beamdef.h" />
@@ -156,6 +174,60 @@
     <ClInclude Include="..\common\weaponinfo.h" />
     <ClInclude Include="..\common\winsani_in.h" />
     <ClInclude Include="..\common\winsani_out.h" />
+    <ClInclude Include="..\engine\anorms.h" />
+    <ClInclude Include="..\engine\APIProxy.h" />
+    <ClInclude Include="..\engine\cdll_int.h" />
+    <ClInclude Include="..\engine\custom.h" />
+    <ClInclude Include="..\engine\customentity.h" />
+    <ClInclude Include="..\engine\edict.h" />
+    <ClInclude Include="..\engine\eiface.h" />
+    <ClInclude Include="..\engine\progdefs.h" />
+    <ClInclude Include="..\engine\progs.h" />
+    <ClInclude Include="..\engine\shake.h" />
+    <ClInclude Include="..\engine\studio.h" />
+    <ClInclude Include="..\pm_shared\pm_debug.h" />
+    <ClInclude Include="..\pm_shared\pm_defs.h" />
+    <ClInclude Include="..\pm_shared\pm_info.h" />
+    <ClInclude Include="..\pm_shared\pm_materials.h" />
+    <ClInclude Include="..\pm_shared\pm_math.h" />
+    <ClInclude Include="..\pm_shared\pm_movevars.h" />
+    <ClInclude Include="..\pm_shared\pm_shared.h" />
+    <ClInclude Include="..\public\asmlib.h" />
+    <ClInclude Include="..\public\basetypes.h" />
+    <ClInclude Include="..\public\commonmacros.h" />
+    <ClInclude Include="..\public\FileSystem.h" />
+    <ClInclude Include="..\public\interface.h" />
+    <ClInclude Include="..\public\MemPool.h" />
+    <ClInclude Include="..\public\strtools.h" />
+    <ClInclude Include="..\public\tier0\dbg.h" />
+    <ClInclude Include="..\public\tier0\platform.h" />
+    <ClInclude Include="..\public\utllinkedlist.h" />
+    <ClInclude Include="..\public\utlmap.h" />
+    <ClInclude Include="..\public\utlmemory.h" />
+    <ClInclude Include="..\public\utlrbtree.h" />
+    <ClInclude Include="..\public\utlsymbol.h" />
+    <ClInclude Include="..\public\utlvector.h" />
+    <ClInclude Include="..\remp\remp.h" />
+    <ClInclude Include="..\shared\bitvec.h" />
+    <ClInclude Include="..\shared\bot\bot.h" />
+    <ClInclude Include="..\shared\bot\bot_constants.h" />
+    <ClInclude Include="..\shared\bot\bot_manager.h" />
+    <ClInclude Include="..\shared\bot\bot_profile.h" />
+    <ClInclude Include="..\shared\bot\bot_util.h" />
+    <ClInclude Include="..\shared\bot\improv.h" />
+    <ClInclude Include="..\shared\bot\nav.h" />
+    <ClInclude Include="..\shared\bot\nav_area.h" />
+    <ClInclude Include="..\shared\bot\nav_file.h" />
+    <ClInclude Include="..\shared\bot\nav_node.h" />
+    <ClInclude Include="..\shared\bot\nav_path.h" />
+    <ClInclude Include="..\shared\bot\simple_state_machine.h" />
+    <ClInclude Include="..\shared\counter.h" />
+    <ClInclude Include="..\shared\GameEvent.h" />
+    <ClInclude Include="..\shared\shared_util.h" />
+    <ClInclude Include="..\shared\simple_checksum.h" />
+    <ClInclude Include="..\shared\steam_util.h" />
+    <ClInclude Include="..\shared\voice_common.h" />
+    <ClInclude Include="..\shared\voice_gamemgr.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

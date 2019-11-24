@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -37,10 +37,10 @@ struct event_info_s
 	short entity_index;      // The edict this event is associated with
 
 	float fire_time;        // if non-zero, the time when the event should be fired ( fixed up on the client )
-	
+
 	event_args_t args;
 
-// CLIENT ONLY	
+// CLIENT ONLY
 	int	  flags;			// Reliable or not, etc.
 
 };
@@ -52,7 +52,7 @@ struct event_state_s
 	struct event_info_s ei[ MAX_EVENT_QUEUE ];
 };
 
-#if !defined( ENTITY_STATEH )
+#ifndef ENTITY_STATE_H
 #include "entity_state.h"
 #endif
 
@@ -60,8 +60,8 @@ struct event_state_s
 #include "edict.h"
 #endif
 
-#define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (int)&(((t *)0)->m)))
-#define	EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)
+#define STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (int)&(((t *)0)->m)))
+#define EDICT_FROM_AREA(l) STRUCT_FROM_LINK(l,edict_t,area)
 
 //============================================================================
 
