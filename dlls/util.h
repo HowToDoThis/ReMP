@@ -120,8 +120,8 @@ inline edict_t *FIND_ENTITY_BY_CLASSNAME(edict_t *entStart, const char *pszName)
 inline edict_t *FIND_ENTITY_BY_TARGETNAME(edict_t *entStart, const char *pszName) { return FIND_ENTITY_BY_STRING(entStart, "targetname", pszName); }
 
 inline edict_t *ENT(const entvars_t *pev) { return pev->pContainingEntity; }
-inline edict_t *ENT(EOFFSET eoffset) { return (*gEnginefuncs.pfnPEntityOfEntOffset)(eoffset); }
-inline EOFFSET OFFSET(const edict_t *pent) { return (*gEnginefuncs.pfnEntOffsetOfPEntity)(pent); }
+inline edict_t *ENT(EOFFSET eoffset) { return (*g_engfuncs.pfnPEntityOfEntOffset)(eoffset); }
+inline EOFFSET OFFSET(const edict_t *pent) { return (*g_engfuncs.pfnEntOffsetOfPEntity)(pent); }
 inline EOFFSET OFFSET(const entvars_t *pev) { return OFFSET(ENT(pev)); }
 
 inline entvars_t *VARS(edict_t *pent)
@@ -138,12 +138,12 @@ inline entvars_t *VARS(EOFFSET eoffset)
 }
 
 #ifndef ENTINDEX
-inline int ENTINDEX(const edict_t *pEdict) { return (*gEnginefuncs.pfnIndexOfEdict)(pEdict); }
-inline int ENTINDEX(const entvars_t *pev) { return (*gEnginefuncs.pfnIndexOfEdict)(ENT(pev)); }
+inline int ENTINDEX(const edict_t *pEdict) { return (*g_engfuncs.pfnIndexOfEdict)(pEdict); }
+inline int ENTINDEX(const entvars_t *pev) { return (*g_engfuncs.pfnIndexOfEdict)(ENT(pev)); }
 #endif // ENTINDEX
 
 #ifndef INDEXENT
-inline edict_t *INDEXENT(int iEdictNum) { return (*gEnginefuncs.pfnPEntityOfEntIndex)(iEdictNum); }
+inline edict_t *INDEXENT(int iEdictNum) { return (*g_engfuncs.pfnPEntityOfEntIndex)(iEdictNum); }
 #endif // INDEXENT
 
 inline void MESSAGE_BEGIN(int msg_dest, int msg_type, const float *pOrigin, entvars_t *ent) { MESSAGE_BEGIN(msg_dest, msg_type, pOrigin, ENT(ent)); }
@@ -156,7 +156,7 @@ inline bool FStrnEq(const char *sz1, const char *sz2, size_t elem) { return (Q_s
 
 inline bool FClassnameIs(entvars_t *pev, const char *szClassname) { return FStrEq(STRING(pev->classname), szClassname); }
 inline bool FClassnameIs(edict_t *pent, const char *szClassname) { return FStrEq(STRING(VARS(pent)->classname), szClassname); }
-inline void UTIL_MakeVectorsPrivate(Vector vecAngles, float *p_vForward, float *p_vRight, float *p_vUp) { gEnginefuncs.pfnAngleVectors(vecAngles, p_vForward, p_vRight, p_vUp); }
+inline void UTIL_MakeVectorsPrivate(Vector vecAngles, float *p_vForward, float *p_vRight, float *p_vUp) { g_engfuncs.pfnAngleVectors(vecAngles, p_vForward, p_vRight, p_vUp); }
 
 #include "ehandle.h"
 

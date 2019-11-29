@@ -30,7 +30,6 @@
 using VectorRef = Vector&;
 using FloatRef = float&;
 
-
 #include "voice_gamemgr.h"
 
 #endif

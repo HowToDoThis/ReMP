@@ -1,4 +1,4 @@
-//========= Copyright © 1996-2002, Valve LLC, All rights reserved. ============
+//========= Copyright ?1996-2002, Valve LLC, All rights reserved. ============
 //
 // Purpose: 
 //
@@ -26,12 +26,12 @@ typedef struct IVoiceTweak_s
 	// without sending to the server. 
 	int				(*StartVoiceTweakMode)();	// Returns 0 on error.
 	void			(*EndVoiceTweakMode)();
-	
+
 	// Get/set control values.
 	void			(*SetControlFloat)(VoiceTweakControl iControl, float value);
 	float			(*GetControlFloat)(VoiceTweakControl iControl);
 
-    int             (*GetSpeakingVolume)();
+	int				(*GetSpeakingVolume)();
 } IVoiceTweak;
 
 

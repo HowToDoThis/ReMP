@@ -28,6 +28,8 @@
 
 #pragma once
 
+#include "regamedll_const.h"
+
 #undef DLLEXPORT
 #ifdef _WIN32
 	// Attributes to specify an "exported" function, visible from outside the
