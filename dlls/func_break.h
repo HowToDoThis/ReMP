@@ -131,9 +131,7 @@ public:
 	virtual void Touch(CBaseEntity *pOther);
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void Move(CBaseEntity *pMover, int push);

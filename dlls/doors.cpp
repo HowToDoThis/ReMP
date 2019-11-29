@@ -411,10 +411,8 @@ void CBaseDoor::DoorTouch(CBaseEntity *pOther)
 {
 	entvars_t *pevToucher = pOther->pev;
 
-#ifdef REGAMEDLL_ADD
 	if ((pev->spawnflags & SF_DOOR_TOUCH_ONLY_CLIENTS) && !pOther->IsPlayer())
 		return;
-#endif
 
 	// Ignore touches by dead players
 	if (pevToucher->deadflag != DEAD_NO)
@@ -510,9 +508,7 @@ void CBaseDoor::DoorGoUp()
 
 			if (TheBots)
 			{
-#ifdef REGAMEDLL_FIXES
 				if (m_hActivator && m_hActivator->IsPlayer())
-#endif
 				{
 					TheBots->OnEvent(EVENT_DOOR, m_hActivator);
 				}
@@ -551,22 +547,14 @@ void CBaseDoor::DoorGoUp()
 				{
 					if (toActivator.y < loY)
 					{
-#ifdef REGAMEDLL_FIXES
 						if (Q_abs(momentArmY) > Q_abs(momentArmX))
-#else
-						if (Q_abs(int(momentArmY)) > Q_abs(int(momentArmX)))
-#endif
 							sign = (momentArmY < 0) ? 1 : -1;
 						else
 							sign = (momentArmX > 0) ? 1 : -1;
 					}
 					else if (toActivator.y > hiY)
 					{
-#ifdef REGAMEDLL_FIXES
 						if (Q_abs(momentArmY) > Q_abs(momentArmX))
-#else
-						if (Q_abs(int(momentArmY)) > Q_abs(int(momentArmX)))
-#endif
 							sign = (momentArmY < 0) ? 1 : -1;
 						else
 							sign = (momentArmX < 0) ? 1 : -1;
@@ -585,22 +573,14 @@ void CBaseDoor::DoorGoUp()
 					}
 					else if (toActivator.y < loY)
 					{
-#ifdef REGAMEDLL_FIXES
 						if (Q_abs(momentArmY) > Q_abs(momentArmX))
-#else
-						if (Q_abs(int(momentArmY)) > Q_abs(int(momentArmX)))
-#endif
 							sign = (momentArmY > 0) ? 1 : -1;
 						else
 							sign = (momentArmX > 0) ? 1 : -1;
 					}
 					else if (toActivator.y > hiY)
 					{
-#ifdef REGAMEDLL_FIXES
 						if (Q_abs(momentArmY) > Q_abs(momentArmX))
-#else
-						if (Q_abs(int(momentArmY)) > Q_abs(int(momentArmX)))
-#endif
 							sign = (momentArmY > 0) ? 1 : -1;
 						else
 							sign = (momentArmX < 0) ? 1 : -1;
@@ -685,9 +665,7 @@ void CBaseDoor::DoorGoDown()
 
 			if (TheBots)
 			{
-#ifdef REGAMEDLL_FIXES
 				if (m_hActivator && m_hActivator->IsPlayer())
-#endif
 				{
 					TheBots->OnEvent(EVENT_DOOR, m_hActivator);
 				}
@@ -887,24 +865,14 @@ void CRotDoor::Restart()
 	// but spawn in the open position
 	if (pev->spawnflags & SF_DOOR_START_OPEN)
 	{
-#ifdef REGAMEDLL_FIXES
 		pev->angles = m_vecAngle1;
-#else
-		pev->angles = m_vecAngle2;
-
-		Vector vecSav = m_vecAngle1;
-		m_vecAngle2 = m_vecAngle1;
-		m_vecAngle1 = vecSav;
-#endif
 
 		pev->movedir = pev->movedir * -1;
 	}
-#ifdef REGAMEDLL_FIXES
 	else if (pev->netname.IsNull())
 	{
 		pev->angles = m_vecAngle1;
 	}
-#endif
 
 	m_toggle_state = TS_AT_BOTTOM;
 	DoorGoDown();
@@ -949,13 +917,7 @@ void CRotDoor::Spawn()
 		// swap pos1 and pos2, put door at pos2, invert movement direction
 		pev->angles = m_vecAngle2;
 
-#ifdef REGAMEDLL_FIXES
 		SWAP(m_vecAngle1, m_vecAngle2);
-#else
-		Vector vecSav = m_vecAngle1;
-		m_vecAngle2 = m_vecAngle1;
-		m_vecAngle1 = vecSav;
-#endif
 
 		pev->movedir = pev->movedir * -1;
 	}

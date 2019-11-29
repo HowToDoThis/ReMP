@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "game_shared/voice_gamemgr.h"
+#include "voice_gamemgr.h"
 #include "cmdhandler.h"
 
 const int MAX_RULE_BUFFER       = 1024;
@@ -536,7 +536,6 @@ public:
 	virtual void ChangeLevel();
 	virtual void GoToIntermission();
 
-#ifdef REGAMEDLL_API
 	BOOL FShouldSwitchWeapon_OrigFunc(CBasePlayer *pPlayer, CBasePlayerItem *pWeapon);
 	BOOL GetNextBestWeapon_OrigFunc(CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon);
 	float FlPlayerFallDamage_OrigFunc(CBasePlayer *pPlayer);
@@ -559,7 +558,6 @@ public:
 	void ChangeLevel_OrigFunc();
 	void GoToIntermission_OrigFunc();
 	void BalanceTeams_OrigFunc();
-#endif
 
 public:
 	void ServerActivate();
@@ -806,9 +804,7 @@ class CCStrikeGameMgrHelper: public IVoiceGameMgrHelper
 public:
 	virtual bool CanPlayerHearPlayer(CBasePlayer *pListener, CBasePlayer *pSender);
 
-#ifdef REGAMEDLL_API
 	bool CanPlayerHearPlayer_OrigFunc(CBasePlayer *pListener, CBasePlayer *pSender);
-#endif
 };
 
 extern CGameRules DLLEXPORT *g_pGameRules;

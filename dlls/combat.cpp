@@ -71,12 +71,7 @@ void RadiusFlash(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker,
 		if (!bInWater && pPlayer->pev->waterlevel == 3)
 			continue;
 
-#ifdef REGAMEDLL_FIXES
 		vecSpot = pPlayer->EyePosition();
-#else
-		// NOTE: See CBasePlayer::BodyTarget
-		vecSpot = pPlayer->BodyTarget(vecSrc);
-#endif
 
 		g_ReGameHookchains.m_RadiusFlash_TraceLine.callChain(RadiusFlash_TraceLine_hook, pPlayer, pevInflictor, pevAttacker, vecSrc, vecSpot, &tr);
 
@@ -258,12 +253,11 @@ void RadiusDamage(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker
 			damageRatio = GetAmountOfPlayerVisible(vecSrc, pEntity);
 
 			float length;
-#ifdef REGAMEDLL_ADD
+
 			// allow to damage breakable objects
 			if (FClassnameIs(pEntity->pev, "func_breakable"))
 				length = (vecSrc - pEntity->Center()).Length();
 			else
-#endif
 				length = (vecSrc - pEntity->pev->origin).Length();
 
 			if (useLOS)
@@ -279,7 +273,6 @@ void RadiusDamage(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker
 			else
 			{
 				flAdjustedDamage = flDamage - length * falloff;
-#ifdef REGAMEDLL_ADD
 				// disable grenade damage through walls?
 				if (hegrenade_penetration.string[0] == '1' && (bitsDamageType & DMG_EXPLOSION))
 				{
@@ -288,17 +281,12 @@ void RadiusDamage(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker
 					if (tr.flFraction != 1.0f)
 						flAdjustedDamage = 0.0f;
 				}
-#endif
 			}
 
-#ifdef REGAMEDLL_FIXES
 			// not allow inflict to the player damage is less than 1.0f and to entities not less than 0.0f
 			if ((pEntity->Classify() == CLASS_PLAYER && flAdjustedDamage < 1.0f) || flAdjustedDamage <= 0.0f)
 				continue;
-#else
-			if (flAdjustedDamage < 0)
-				flAdjustedDamage = 0;
-#endif
+
 			pEntity->TakeDamage(pevInflictor, pevAttacker, flAdjustedDamage, bitsDamageType);
 		}
 	}

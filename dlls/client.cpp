@@ -4704,10 +4704,8 @@ void EXT_FUNC UpdateClientData(const edict_t *ent, int sendweapons, struct clien
 
 		if (pPlayer->pev->iuser1 == OBS_NONE && !pevOrg)
 		{
-#ifdef REGAMEDLL_ADD
 			// useful for mods
 			iUser3 |= pev->iuser3;
-#endif
 			cd->iuser3 = iUser3;
 		}
 
@@ -4781,14 +4779,11 @@ int EXT_FUNC ConnectionlessPacket(const struct netadr_s *net_from, const char *a
 
 BOOL EXT_FUNC GetHullBounds(int hullnumber, float *mins, float *maxs)
 {
-#ifdef REGAMEDLL_ADD
 	if (hullbounds_sets.value == 0.0f)
 	{
 		return (hullnumber < 3) ? TRUE : FALSE;
 	}
-#endif
 
-#ifdef REGAMEDLL_FIXES
 	switch (hullnumber)
 	{
 	case 0: // Normal player
@@ -4806,31 +4801,13 @@ BOOL EXT_FUNC GetHullBounds(int hullnumber, float *mins, float *maxs)
 	default:
 		return FALSE;
 	}
-#else // REGAMEDLL_FIXES
-	switch (hullnumber)
-	{
-	case 0: // Normal player
-		mins = VEC_HULL_MIN;
-		maxs = VEC_HULL_MAX;
-		return TRUE;
-	case 1: // Crouched player
-		mins = VEC_DUCK_HULL_MIN;
-		maxs = VEC_DUCK_HULL_MAX;
-		return TRUE;
-	case 2: // Point based hull
-		mins = Vector(0, 0, 0);
-		maxs = Vector(0, 0, 0);
-		return TRUE;
-	default:
-		return FALSE;
-	}
-#endif // REGAMEDLL_FIXES
 }
 
 // Create pseudo-baselines for items that aren't placed in the map at spawn time, but which are likely
 // to be created during play ( e.g., grenades, ammo packs, projectiles, corpses, etc. )
 void EXT_FUNC CreateInstancedBaselines()
 {
+	/*
 #ifndef REGAMEDLL_FIXES
 	int iret = 0;
 	entity_state_t state;
@@ -4843,6 +4820,7 @@ void EXT_FUNC CreateInstancedBaselines()
 	// Destroy objects.
 	// UTIL_Remove(pc);
 #endif
+*/
 }
 
 int EXT_FUNC InconsistentFile(const edict_t *pEdict, const char *filename, char *disconnect_message)

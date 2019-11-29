@@ -202,9 +202,7 @@ public:
 	virtual int Restore(CRestore &restore);
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void TurnOn();
@@ -257,9 +255,7 @@ public:
 	virtual int Restore(CRestore &restore);
 	virtual void Activate();
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void EXPORT StrikeThink();
