@@ -302,12 +302,7 @@ void CCSBot::Attack(CBasePlayer *victim)
 		m_attackState.SetCrouchAndHold(false);
 
 	PrintIfWatched("ATTACK BEGIN (reaction time = %g (+ update time), surprise time = %g, attack delay = %g)\n"
-
-#ifdef REGAMEDLL_FIXES
-		, GetProfile()->GetReactionTime(), m_surpriseDelay, GetProfile()->GetAttackDelay()
-#endif
-
-	);
+		, GetProfile()->GetReactionTime(), m_surpriseDelay, GetProfile()->GetAttackDelay());
 
 	m_isAttacking = true;
 	m_attackState.OnEnter(this);
@@ -321,11 +316,7 @@ void CCSBot::Attack(CBasePlayer *victim)
 	Vector toEnemy = victim->pev->origin - pev->origin;
 	Vector idealAngle = UTIL_VecToAngles(toEnemy);
 
-#ifdef REGAMEDLL_FIXES
 	real_t deltaYaw = real_t(Q_abs(m_lookYaw - idealAngle.y));
-#else
-	real_t deltaYaw = real_t(Q_abs(int64(m_lookYaw - idealAngle.y)));
-#endif
 
 	while (deltaYaw > 180.0f)
 		deltaYaw -= 360.0f;

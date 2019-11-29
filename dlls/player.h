@@ -381,7 +381,6 @@ public:
 	virtual void Blind(float flUntilTime, float flHoldTime, float flFadeTime, int iAlpha);
 	virtual void OnTouchingWeapon(CWeaponBox *pWeapon) { }
 
-#ifdef REGAMEDLL_API
 	void Spawn_OrigFunc();
 	void Precache_OrigFunc();
 	int ObjectCaps_OrigFunc();
@@ -432,7 +431,6 @@ public:
 	void DropIdlePlayer_OrigFunc(const char *reason);
 
 	CCSPlayer *CSPlayer() const;
-#endif // REGAMEDLL_API
 
 public:
 	static CBasePlayer *Instance(edict_t *pEdict) { return GET_PRIVATE<CBasePlayer>(pEdict ? pEdict : ENT(0)); }
@@ -916,13 +914,9 @@ inline bool CBasePlayer::IsReloading() const
 	return false;
 }
 
-#ifdef REGAMEDLL_API
 inline CCSPlayer *CBasePlayer::CSPlayer() const {
 	return reinterpret_cast<CCSPlayer *>(this->m_pEntity);
 }
-#endif
-
-#ifdef REGAMEDLL_FIXES
 
 // returns a CBaseEntity pointer to a player by index.  Only returns if the player is spawned and connected otherwise returns NULL
 // Index is 1 based
@@ -931,7 +925,6 @@ inline CBasePlayer *UTIL_PlayerByIndex(int playerIndex)
 	return GET_PRIVATE<CBasePlayer>(INDEXENT(playerIndex));
 }
 
-#endif
 
 inline CBasePlayer *UTIL_PlayerByIndexSafe(int playerIndex)
 {

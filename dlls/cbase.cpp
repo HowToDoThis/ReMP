@@ -663,17 +663,9 @@ BOOL CBaseEntity::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 	// UNDONE: some entity types may be immune or resistant to some bitsDamageType
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin).
-#ifndef REGAMEDLL_FIXES
-	if (pevAttacker == pevInflictor)
-	{
-		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
-	}
-	else
-#endif
-	{
-		// an actual missile was involved.
-		vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
-	}
+
+	// an actual missile was involved.
+	vecTemp = pevInflictor->origin - (VecBModelOrigin(pev));
 
 	// this global is still used for glass and other non-monster killables, along with decals.
 	g_vecAttackDir = vecTemp.Normalize();
@@ -1546,28 +1538,21 @@ void OnFreeEntPrivateData(edict_t *pEnt)
 	if (!pEntity)
 		return;
 
-#ifdef REGAMEDLL_API
 	pEntity->OnDestroy();
-#endif
 
 	pEntity->UpdateOnRemove();
 	RemoveEntityHashValue(pEntity->pev, STRING(pEntity->pev->classname), CLASSNAME);
 
-#ifdef REGAMEDLL_API
 	if (pEntity->m_pEntity) {
 		delete pEntity->m_pEntity;
 		pEntity->m_pEntity = nullptr;
 	}
-#endif
 
-#ifdef REGAMEDLL_FIXES
 	if (TheCSBots()) {
 		TheCSBots()->OnFreeEntPrivateData(pEntity);
 	}
-#endif
 }
 
-#ifdef REGAMEDLL_API
 void CBaseEntity::OnCreate()
 {
 	;
@@ -1577,4 +1562,3 @@ void CBaseEntity::OnDestroy()
 {
 	;
 }
-#endif

@@ -132,7 +132,6 @@ extern cvar_t sk_scientist_heal1;
 extern cvar_t sk_scientist_heal2;
 extern cvar_t sk_scientist_heal3;
 
-#ifdef REGAMEDLL_ADD
 
 extern cvar_t maxmoney;
 extern cvar_t round_infinite;
@@ -171,8 +170,6 @@ extern cvar_t ff_damage_reduction_grenade_self;
 extern cvar_t ff_damage_reduction_other;
 extern cvar_t radio_timeout;
 extern cvar_t radio_maxinround;
-
-#endif
 
 extern cvar_t scoreboard_showmoney;
 extern cvar_t scoreboard_showhealth;

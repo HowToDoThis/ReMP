@@ -249,10 +249,8 @@ bool CCSBot::IsVisible(const Vector *pos, bool testFOV) const
 // Check parts in order of importance. Return the first part seen in "visParts" if it is non-NULL.
 bool CCSBot::IsVisible(CBasePlayer *pPlayer, bool testFOV, unsigned char *visParts) const
 {
-#ifdef REGAMEDLL_ADD // REGAMEDLL_FIXES ?
 	if ((pPlayer->pev->flags & FL_NOTARGET) || (pPlayer->pev->effects & EF_NODRAW))
 		return false;
-#endif
 	
 	Vector spot = pPlayer->pev->origin;
 	unsigned char testVisParts = NONE;
@@ -512,13 +510,8 @@ void CCSBot::UpdateLookAround(bool updateNow)
 			Vector delta = m_spotEncounter->path.to - m_spotEncounter->path.from;
 			real_t length = delta.Length();
 
-#ifdef REGAMEDLL_FIXES
 			float adx = Q_abs(delta.x);
 			float ady = Q_abs(delta.y);
-#else
-			float adx = float(Q_abs(int64(delta.x)));
-			float ady = float(Q_abs(int64(delta.y)));
-#endif
 			real_t t;
 
 			if (adx > ady)
@@ -664,11 +657,7 @@ bool CCSBot::BendLineOfSight(const Vector *eye, const Vector *point, Vector *ben
 CBasePlayer *CCSBot::FindMostDangerousThreat()
 {
 	// maximum number of simulataneously attendable threats
-#ifdef REGAMEDLL_FIXES
 	const int MAX_THREATS = MAX_CLIENTS;
-#else
-	const int MAX_THREATS = 16;
-#endif
 
 	struct CloseInfo
 	{
@@ -679,13 +668,11 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 	CloseInfo threat[MAX_THREATS];
 	int threatCount = 0;
 
-#ifdef REGAMEDLL_ADD
 	int prevIndex = m_enemyQueueIndex - 1;
 	if (prevIndex < 0)
 		prevIndex = MAX_ENEMY_QUEUE - 1;
 
 	CBasePlayer *currentThreat = m_enemyQueue[prevIndex].player;
-#endif
 
 	m_bomber = nullptr;
 	m_closestVisibleFriend = nullptr;
@@ -719,10 +706,9 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 			if (!pPlayer->IsAlive())
 				continue;
 
-#ifdef REGAMEDLL_ADD // REGAMEDLL_FIXES ?
 			if ((pPlayer->pev->flags & FL_NOTARGET) || (pPlayer->pev->effects & EF_NODRAW))
 				continue;
-#endif
+
 			// is it an enemy?
 			if (BotRelationship(pPlayer) == BOT_TEAMMATE)
 			{
@@ -760,7 +746,6 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 			if (!IsVisible(pPlayer, CHECK_FOV, &visParts))
 				continue;
 
-#ifdef REGAMEDLL_ADD
 			// do we notice this enemy? (always notice current enemy)
 			if (pPlayer != currentThreat)
 			{
@@ -769,7 +754,6 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 					continue;
 				}
 			}
-#endif
 
 			// update watch timestamp
 			int idx = pPlayer->entindex() - 1;
@@ -928,7 +912,6 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 
 		int t;
 
-#ifdef REGAMEDLL_ADD
 		bool sawCloserThreat = false;
 		bool sawCurrentThreat = false;
 		for (t = 0; t < threatCount; t++)
@@ -947,7 +930,6 @@ CBasePlayer *CCSBot::FindMostDangerousThreat()
 		{
 			return currentThreat;
 		}
-#endif
 
 		// otherwise, find the closest threat that without using shield
 		for (t = 0; t < threatCount; t++)
@@ -975,10 +957,8 @@ void CCSBot::UpdateReactionQueue()
 
 	int now = m_enemyQueueIndex;
 
-#ifdef REGAMEDLL_ADD
 	// reset timer
 	m_attentionInterval.Start();
-#endif
 
 	// store a snapshot of its state at the end of the reaction time queue
 	if (threat)
@@ -1080,7 +1060,6 @@ void CCSBot::Blind(float duration, float holdTime, float fadeTime, int alpha)
 	AdjustSafeTime();
 }
 
-#ifdef REGAMEDLL_ADD
 bool CCSBot::IsNoticable(const CBasePlayer *pPlayer, unsigned char visibleParts) const
 {
 	float deltaT = m_attentionInterval.GetElapsedTime();
@@ -1214,4 +1193,3 @@ bool CCSBot::IsNoticable(const CBasePlayer *pPlayer, unsigned char visibleParts)
 	//PrintIfWatched("Notice chance = %3.2f\n", noticeChance);
 	return (RANDOM_FLOAT(0.0f, 100.0f) < noticeChance);
 }
-#endif

@@ -381,12 +381,10 @@ void CGib::WaitTillLand()
 		SetThink(&CBaseEntity::SUB_StartFadeOut);
 		pev->nextthink = gpGlobals->time + m_lifeTime;
 
-#ifndef REGAMEDLL_FIXES
 		if (m_bloodColor != DONT_BLEED)
 		{
 			CSoundEnt::InsertSound(bits_SOUND_MEAT, pev->origin, 384, 25);
 		}
-#endif
 	}
 	else
 	{
@@ -992,9 +990,9 @@ void CBaseMonster::BloodSplat(const Vector &vecSrc, const Vector &vecDir, int Hi
 	if (HitLocation != HITGROUP_HEAD)
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	UTIL_BloodStream(vecSrc, vecDir, BLOOD_COLOR_DARKRED, iVelocity + RANDOM_LONG(0, 100));
-#else
+
+	/*
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecSrc);
 		WRITE_BYTE(TE_BLOODSTREAM);
 		WRITE_COORD(vecSrc.x);
@@ -1006,5 +1004,5 @@ void CBaseMonster::BloodSplat(const Vector &vecSrc, const Vector &vecDir, int Hi
 		WRITE_BYTE(BLOOD_COLOR_DARKRED);
 		WRITE_BYTE(iVelocity + RANDOM_LONG(0, 100));
 	MESSAGE_END();
-#endif
+	*/
 }

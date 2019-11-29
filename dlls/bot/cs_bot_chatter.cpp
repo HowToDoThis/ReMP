@@ -425,9 +425,7 @@ bool BotPhraseManager::Initialize(const char *filename, int bankIndex)
 	char baseDir[RadioPathLen] = "";
 	char compositeFilename[RadioPathLen];
 
-#ifdef REGAMEDLL_ADD
 	char filePath[MAX_PATH];
-#endif
 
 	// Parse the BotChatter.db into BotPhrase collections
 	while (true)
@@ -602,12 +600,10 @@ bool BotPhraseManager::Initialize(const char *filename, int bankIndex)
 				if (!Q_stricmp(token, "End"))
 					break;
 
-#ifdef REGAMEDLL_ADD
 				Q_snprintf(filePath, sizeof(filePath), "sound\\%s%s", baseDir, token);
 
 				if (!g_pFileSystem->FileExists(filePath))
 					continue;
-#endif
 
 				// found a phrase - add it to the collection
 				BotSpeakable *speak = new BotSpeakable;
@@ -1040,9 +1036,7 @@ bool BotStatement::Update()
 					else if (enemyCount > 1)
 					{
 						phrase = TheBotPhrases->GetPhrase("EnemySpotted");
-#ifdef REGAMEDLL_FIXES
 						if (phrase)
-#endif
 						{
 							phrase->SetCountCriteria(enemyCount);
 						}
@@ -1584,20 +1578,16 @@ bool BotChatterInterface::ShouldSpeak() const
 
 float BotChatterInterface::GetRadioSilenceDuration()
 {
-#ifdef REGAMEDLL_FIXES
 	if (m_me->m_iTeam != CT && m_me->m_iTeam != TERRORIST)
 		return 0;
-#endif
 
 	return m_radioSilenceInterval[m_me->m_iTeam - 1].GetElapsedTime();
 }
 
 void BotChatterInterface::ResetRadioSilenceDuration()
 {
-#ifdef REGAMEDLL_FIXES
 	if (m_me->m_iTeam != CT && m_me->m_iTeam != TERRORIST)
 		return;
-#endif
 
 	m_radioSilenceInterval[m_me->m_iTeam - 1].Reset();
 }
@@ -1973,13 +1963,11 @@ NOXREF void BotChatterInterface::GuardingLooseBomb(CBaseEntity *bomb)
 	if (TheCSBots()->IsRoundOver() || !bomb)
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	const float minInterval = 20.0f;
 	if (m_planInterval.IsLessThen(minInterval))
 		return;
 
 	m_planInterval.Reset();
-#endif
 
 	// update our gamestate
 	m_me->GetGameState()->UpdateLooseBomb(&bomb->pev->origin);
@@ -2111,9 +2099,7 @@ void BotChatterInterface::GuardingHostages(Place place, bool isPlan)
 	if (m_planInterval.IsLessThen(minInterval))
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	m_planInterval.Reset();
-#endif
 
 	if (isPlan)
 		AnnouncePlan("GoingToGuardHostages", place);
@@ -2130,9 +2116,7 @@ void BotChatterInterface::GuardingHostageEscapeZone(bool isPlan)
 	if (m_planInterval.IsLessThen(minInterval))
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	m_planInterval.Reset();
-#endif
 
 	if (isPlan)
 		AnnouncePlan("GoingToGuardHostageEscapeZone", UNDEFINED_PLACE);

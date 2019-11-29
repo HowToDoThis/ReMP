@@ -55,7 +55,6 @@ class CRotButton: public CBaseButton
 public:
 	virtual void Spawn();
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
 	virtual int Save(CSave &save);
 	virtual int Restore(CRestore &restore);
@@ -63,7 +62,6 @@ public:
 public:
 	static TYPEDESCRIPTION m_SaveData[];
 	Vector m_vecSpawn;
-#endif
 
 };
 
@@ -126,9 +124,7 @@ public:
 	virtual int Save(CSave &save);
 	virtual int Restore(CRestore &restore);
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void EXPORT SparkThink();

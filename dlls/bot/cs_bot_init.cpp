@@ -57,14 +57,11 @@ cvar_t cv_bot_defer_to_human         = { "bot_defer_to_human", "0", FCVAR_SERVER
 cvar_t cv_bot_chatter                = { "bot_chatter", "normal", FCVAR_SERVER, 0.0f, nullptr };
 cvar_t cv_bot_profile_db             = { "bot_profile_db", "BotProfile.db", FCVAR_SERVER, 0.0f, nullptr };
 
-#ifdef REGAMEDLL_ADD
 cvar_t cv_bot_deathmatch             = { "bot_deathmatch", "0", FCVAR_SERVER, 0.0f, nullptr };
 cvar_t cv_bot_quota_mode             = { "bot_quota_mode", "normal", FCVAR_SERVER, 0.0f, nullptr };
 cvar_t cv_bot_join_delay             = { "bot_join_delay", "0", FCVAR_SERVER, 0.0f, nullptr };
-#else
 // Migrated to bot_quota_mode, use "match"
-cvar_t cv_bot_quota_match            = { "bot_quota_match", "0", FCVAR_SERVER, 0.0f, nullptr };
-#endif
+//cvar_t cv_bot_quota_match            = { "bot_quota_match", "0", FCVAR_SERVER, 0.0f, nullptr };
 
 void InstallBotControl()
 {
@@ -103,9 +100,7 @@ void Bot_RegisterCVars()
 	CVAR_REGISTER(&cv_bot_quicksave);
 	CVAR_REGISTER(&cv_bot_quota);
 
-#ifndef REGAMEDLL_ADD
-	CVAR_REGISTER(&cv_bot_quota_match);
-#endif
+	//CVAR_REGISTER(&cv_bot_quota_match);
 
 	CVAR_REGISTER(&cv_bot_prefix);
 	CVAR_REGISTER(&cv_bot_allow_rogues);
@@ -125,12 +120,9 @@ void Bot_RegisterCVars()
 	CVAR_REGISTER(&cv_bot_chatter);
 	CVAR_REGISTER(&cv_bot_profile_db);
 
-#ifdef REGAMEDLL_ADD
 	CVAR_REGISTER(&cv_bot_deathmatch);
 	CVAR_REGISTER(&cv_bot_quota_mode);
 	CVAR_REGISTER(&cv_bot_join_delay);
-#endif
-
 }
 
 // Constructor
@@ -305,14 +297,12 @@ void CCSBot::ResetValues()
 	m_avoid = nullptr;
 	m_enemy = nullptr;
 
-#ifdef REGAMEDLL_FIXES
 	for (int i = 0; i < MAX_ENEMY_QUEUE; i++)
 	{
 		m_enemyQueue[i].player = nullptr;
 		m_enemyQueue[i].isReloading = false;
 		m_enemyQueue[i].isProtectedByShield = false;
 	}
-#endif
 
 	// start in idle state
 	StopAttacking();

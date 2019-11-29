@@ -89,13 +89,8 @@ public:
 	// This is ONLY used by the node graph to test movement through a door
 	virtual void SetToggleState(int state) {}
 
-#ifndef REGAMEDLL_API
-	virtual void StartSneaking() {}
-	virtual void StopSneaking() {}
-#else
 	virtual void OnCreate();
 	virtual void OnDestroy();
-#endif
 
 	virtual BOOL OnControls(entvars_t *onpev) { return FALSE; }
 	virtual BOOL IsSneaking() { return FALSE; }
@@ -233,13 +228,11 @@ public:
 	void SetBlocked(void (T::*pfn)(CBaseEntity *pOther));
 	void SetBlocked(std::nullptr_t);
 
-#ifdef REGAMEDLL_API
 	CCSEntity *m_pEntity;
-#else
+
 	// We use this variables to store each ammo count.
 	// let's sacrifice this unused member, for its own needs in favor of m_pEntity
 	int *current_ammo;
-#endif
 
 	float currentammo;
 	int maxammo_buckshot;
@@ -371,9 +364,7 @@ public:
 	int ExtractBbox(int sequence, float *mins, float *maxs);
 	void SetSequenceBox();
 
-#ifdef REGAMEDLL_API
 	void ResetSequenceInfo_OrigFunc();
-#endif
 
 public:
 	static TYPEDESCRIPTION m_SaveData[];
@@ -486,9 +477,7 @@ public:
 		return (CBaseToggle::ObjectCaps() & ~FCAP_ACROSS_TRANSITION);
 	}
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void RotSpawn();
@@ -538,10 +527,7 @@ public:
 	virtual int ObjectCaps() { return (CPointEntity::ObjectCaps() | FCAP_MASTER); }
 	virtual BOOL IsTriggered(CBaseEntity *pActivator);
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
-
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	void EXPORT Register();
@@ -575,12 +561,9 @@ T *GetClassPtr(T *a)
 		a = new(pev) T;
 		a->pev = pev;
 
-#ifdef REGAMEDLL_API
 		a->OnCreate();
 		a->m_pEntity = new W();
 		a->m_pEntity->m_pContainingEntity = a;
-#endif
-
 	}
 
 	return a;

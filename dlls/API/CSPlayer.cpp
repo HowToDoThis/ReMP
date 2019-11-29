@@ -546,7 +546,6 @@ void CCSPlayer::OnSpawn()
 
 void CCSPlayer::OnKilled()
 {
-#ifdef REGAMEDLL_ADD
 	if (forcerespawn.value > 0)
 	{
 		m_flRespawnPending = gpGlobals->time + forcerespawn.value;
@@ -556,5 +555,4 @@ void CCSPlayer::OnKilled()
 	{
 		BasePlayer()->RemoveSpawnProtection();
 	}
-#endif
 }

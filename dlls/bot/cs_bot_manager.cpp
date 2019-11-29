@@ -105,9 +105,7 @@ CCSBotManager::CCSBotManager()
 		TheBotPhrases->Initialize((*pVoiceBanks)[i], i);
 	}
 
-#ifdef REGAMEDLL_FIXES
 	AddServerCommands();
-#endif
 }
 
 // Invoked when a new round begins
@@ -245,9 +243,7 @@ void CCSBotManager::ServerActivate()
 
 	m_bServerActive = true;
 
-#ifndef REGAMEDLL_FIXES
-	AddServerCommands();
-#endif
+	//AddServerCommands();
 
 	TheBotPhrases->OnMapChange();
 }
@@ -410,11 +406,7 @@ void CCSBotManager::ServerCommand(const char *pcmd)
 			{
 				if (killThemAll || FStrEq(name, msg))
 				{
-#ifdef REGAMEDLL_FIXES
 					ClientKill(pPlayer->edict());
-#else
-					pPlayer->TakeDamage(pPlayer->pev, pPlayer->pev, 9999.9f, DMG_CRUSH);
-#endif
 				}
 			}
 		}
@@ -816,13 +808,11 @@ bool CCSBotManager::BotAddCommand(BotProfileTeamType team, bool isFromConsole)
 			CVAR_SET_FLOAT("bot_quota", cv_bot_quota.value + 1);
 		}
 	}
-#ifdef REGAMEDLL_FIXES
 	else
 	{
 		// decrease the bot quota
 		CVAR_SET_FLOAT("bot_quota", cv_bot_quota.value - 1);
 	}
-#endif
 
 	return true;
 }
@@ -830,10 +820,8 @@ bool CCSBotManager::BotAddCommand(BotProfileTeamType team, bool isFromConsole)
 // Keep a minimum quota of bots in the game
 void CCSBotManager::MaintainBotQuota()
 {
-#ifdef REGAMEDLL_FIXES
 	if (!AreBotsAllowed())
 		return;
-#endif
 
 	if (m_isLearningMap)
 		return;
@@ -853,7 +841,6 @@ void CCSBotManager::MaintainBotQuota()
 							 !TheCSBots()->IsRoundOver() &&
 							 (CSGameRules()->GetRoundElapsedTime() >= CSGameRules()->GetRoundRespawnTime());
 
-#ifdef REGAMEDLL_ADD
 	if (FStrEq(cv_bot_quota_mode.string, "fill"))
 	{
 		// If bot_quota_mode is 'fill', we want the number of bots and humans together to equal bot_quota
@@ -880,12 +867,13 @@ void CCSBotManager::MaintainBotQuota()
 			desiredBotCount = occupiedBotSlots;
 		}
 	}
-#else // #ifdef REGAMEDLL_ADD
+
+	/*
 	if (cv_bot_quota_match.value > 0.0)
 	{
 		desiredBotCount = int(humanPlayersInGame * cv_bot_quota_match.value);
 	}
-#endif // #ifdef REGAMEDLL_ADD
+	*/
 
 	// wait for a player to join, if necessary
 	if (cv_bot_join_after_player.value > 0.0)
@@ -894,14 +882,12 @@ void CCSBotManager::MaintainBotQuota()
 			desiredBotCount = 0;
 	}
 
-#ifdef REGAMEDLL_ADD
 	// wait until the map has been loaded for a bit, to allow players to transition across
 	// the transition without missing the pistol round
 	if (static_cast<int>(cv_bot_join_delay.value) > CSGameRules()->GetMapElapsedTime())
 	{
 		desiredBotCount = 0;
 	}
-#endif
 
 	// if bots will auto-vacate, we need to keep one slot open to allow players to join
 	if (cv_bot_auto_vacate.value > 0.0)
@@ -909,7 +895,6 @@ void CCSBotManager::MaintainBotQuota()
 	else
 		desiredBotCount = Q_min(desiredBotCount, gpGlobals->maxClients - totalHumansInGame);
 
-#ifdef REGAMEDLL_FIXES
 	// Try to balance teams, if we are in the first specified seconds of a round and bots can join either team.
 	if (occupiedBotSlots > 0 && desiredBotCount == occupiedBotSlots && CSGameRules()->IsGameStarted())
 	{
@@ -941,7 +926,6 @@ void CCSBotManager::MaintainBotQuota()
 			}
 		}
 	}
-#endif // #ifdef REGAMEDLL_FIXES
 
 	// add bots if necessary
 	if (desiredBotCount > occupiedBotSlots)
@@ -949,12 +933,7 @@ void CCSBotManager::MaintainBotQuota()
 		// don't try to add a bot if all teams are full
 		if (!CSGameRules()->TeamFull(TERRORIST) || !CSGameRules()->TeamFull(CT))
 		{
-#ifndef REGAMEDLL_FIXES
-			if (AreBotsAllowed())
-#endif
-			{
-				BotAddCommand(BOT_TEAM_ANY);
-			}
+			BotAddCommand(BOT_TEAM_ANY);
 		}
 	}
 	else if (desiredBotCount < occupiedBotSlots)
@@ -1177,10 +1156,8 @@ void CCSBotManager::ValidateMapData()
 
 		while ((pEntity = UTIL_FindEntityByClassname(pEntity, "info_player_start")))
 		{
-#ifdef REGAMEDLL_FIXES
 			if (m_zoneCount >= MAX_ZONES)
 				break;
-#endif
 
 			if (FNullEnt(pEntity->edict()))
 				break;
