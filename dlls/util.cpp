@@ -28,11 +28,7 @@ int g_groupop = 0;
 
 float UTIL_WeaponTimeBase()
 {
-#ifdef CLIENT_WEAPONS
 	return 0.0;
-#else
-	return gpGlobals->time;
-#endif
 }
 
 unsigned int U_Random()
@@ -1661,7 +1657,6 @@ bool UTIL_AreBotsAllowed()
 
 bool UTIL_IsBeta()
 {
-#ifdef BUILD_LATEST
 	if (g_engfuncs.pfnEngCheckParm == nullptr)
 		return false;
 
@@ -1676,7 +1671,6 @@ bool UTIL_IsBeta()
 	{
 		return true;
 	}
-#endif // #ifdef BUILD_LATEST
 
 	return false;
 }

@@ -76,14 +76,7 @@ void CHEGrenade::Holster(int skiplocal)
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5f;
 
 	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
-	{
-#ifndef REGAMEDLL_FIXES
-		// Moved to DestroyItem()
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_HEGRENADE);
-#endif
-
 		DestroyItem();
-	}
 
 	m_flStartThrow = 0;
 	m_flReleaseThrow = -1.0f;

@@ -224,13 +224,11 @@ void LinkUserMessages()
 	gmsgShowTimer     = REG_USER_MSG("ShowTimer", 0);
 	gmsgHudTextArgs   = REG_USER_MSG("HudTextArgs", -1);
 
-#ifdef BUILD_LATEST
 	if (AreRunningBeta())
 	{
 		gmsgAccount       = REG_USER_MSG("Account", 5);
 		gmsgHealthInfo    = REG_USER_MSG("HealthInfo", 5);
 	}
-#endif
 }
 
 void WriteSigonMessages()
@@ -4562,7 +4560,6 @@ void EXT_FUNC RegisterEncoders()
 
 int EXT_FUNC GetWeaponData(edict_t *pEdict, struct weapon_data_s *info)
 {
-#ifdef CLIENT_WEAPONS
 	entvars_t *pev = &pEdict->v;
 	CBasePlayer *pPlayer = CBasePlayer::Instance(pev);
 
@@ -4610,9 +4607,6 @@ int EXT_FUNC GetWeaponData(edict_t *pEdict, struct weapon_data_s *info)
 			pPlayerItem = pPlayerItem->m_pNext;
 		}
 	}
-#else
-	Q_memset(info, 0, sizeof(weapon_data_t) * MAX_WEAPONS);
-#endif
 
 	return 1;
 }
@@ -4807,20 +4801,7 @@ BOOL EXT_FUNC GetHullBounds(int hullnumber, float *mins, float *maxs)
 // to be created during play ( e.g., grenades, ammo packs, projectiles, corpses, etc. )
 void EXT_FUNC CreateInstancedBaselines()
 {
-	/*
-#ifndef REGAMEDLL_FIXES
-	int iret = 0;
-	entity_state_t state;
 
-	Q_memset(&state, 0, sizeof(state));
-
-	// Create any additional baselines here for things like grendates, etc.
-	// iret = ENGINE_INSTANCE_BASELINE(pc->pev->classname, &state);
-
-	// Destroy objects.
-	// UTIL_Remove(pc);
-#endif
-*/
 }
 
 int EXT_FUNC InconsistentFile(const edict_t *pEdict, const char *filename, char *disconnect_message)

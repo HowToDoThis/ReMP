@@ -533,11 +533,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual BOOL IsPistol() { return TRUE; }
 
@@ -583,11 +579,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -632,11 +624,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -680,11 +668,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -728,11 +712,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -777,11 +757,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -825,11 +801,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -872,11 +844,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual BOOL IsPistol() { return TRUE; }
 
@@ -958,11 +926,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1024,11 +988,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual BOOL IsPistol() { return TRUE; }
 
@@ -1122,11 +1082,7 @@ public:
 	virtual void SecondaryAttack();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual void WeaponIdle();
 
@@ -1217,11 +1173,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1272,11 +1224,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1498,11 +1446,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 	BOOL CanDeploy_OrigFunc();
@@ -1546,11 +1490,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1595,11 +1535,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1650,11 +1586,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual BOOL IsPistol() { return TRUE; }
 
@@ -1699,11 +1631,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 	virtual BOOL IsPistol() { return TRUE; }
 
@@ -1749,11 +1677,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1797,11 +1721,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1843,11 +1763,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1893,11 +1809,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:

@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "game_shared/simple_checksum.h"
+#include "simple_checksum.h"
 
 // long STL names get truncated in browse info.
 #pragma warning(disable : 4786)

@@ -82,11 +82,7 @@ NOXREF void CKnife::WeaponAnimation(int iAnimation)
 {
 	int flag;
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usKnife,
 		0.0, (float *)&g_vecZero, (float *)&g_vecZero,
@@ -361,30 +357,25 @@ BOOL CKnife::Swing(BOOL fFirst)
 
 		ApplyMultiDamage(m_pPlayer->pev, m_pPlayer->pev);
 
-#ifndef REGAMEDLL_FIXES
-		if (pEntity)	// -V595
-#endif
+		if (pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE)
 		{
-			if (pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE)
+			// play thwack or smack sound
+			switch (RANDOM_LONG(0, 3))
 			{
-				// play thwack or smack sound
-				switch (RANDOM_LONG(0, 3))
-				{
-				case 0: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit1.wav", VOL_NORM, ATTN_NORM); break;
-				case 1: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit2.wav", VOL_NORM, ATTN_NORM); break;
-				case 2: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit3.wav", VOL_NORM, ATTN_NORM); break;
-				case 3: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit4.wav", VOL_NORM, ATTN_NORM); break;
-				}
-
-				m_pPlayer->m_iWeaponVolume = KNIFE_BODYHIT_VOLUME;
-
-				if (!pEntity->IsAlive())
-					return TRUE;
-				else
-					flVol = 0.1f;
-
-				fHitWorld = FALSE;
+			case 0: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit1.wav", VOL_NORM, ATTN_NORM); break;
+			case 1: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit2.wav", VOL_NORM, ATTN_NORM); break;
+			case 2: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit3.wav", VOL_NORM, ATTN_NORM); break;
+			case 3: EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_hit4.wav", VOL_NORM, ATTN_NORM); break;
 			}
+
+			m_pPlayer->m_iWeaponVolume = KNIFE_BODYHIT_VOLUME;
+
+			if (!pEntity->IsAlive())
+				return TRUE;
+			else
+				flVol = 0.1f;
+
+			fHitWorld = FALSE;
 		}
 
 		// play texture hit sound
@@ -460,9 +451,7 @@ BOOL CKnife::Stab(BOOL fFirst)
 		if (fFirst)
 		{
 			SendWeaponAnim(KNIFE_STABMISS, UseDecrement() != FALSE);
-#ifdef REGAMEDLL_FIXES
 			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0f;
-#endif
 
 			m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
 			m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0f;
@@ -483,9 +472,7 @@ BOOL CKnife::Stab(BOOL fFirst)
 		fDidHit = TRUE;
 
 		SendWeaponAnim(KNIFE_STABHIT, UseDecrement() != FALSE);
-#ifdef REGAMEDLL_FIXES
 		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0f;
-#endif
 
 		m_flNextPrimaryAttack = GetNextAttackDelay(1.1);
 		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.1f;
@@ -527,22 +514,17 @@ BOOL CKnife::Stab(BOOL fFirst)
 		pEntity->TraceAttack(m_pPlayer->pev, flDamage, gpGlobals->v_forward, &tr, (DMG_NEVERGIB | DMG_BULLET));
 		ApplyMultiDamage(m_pPlayer->pev, m_pPlayer->pev);
 
-#ifndef REGAMEDLL_FIXES
-		if (pEntity)	// -V595
-#endif
+		if (pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE)
 		{
-			if (pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE)
-			{
-				EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_stab.wav", VOL_NORM, ATTN_NORM);
-				m_pPlayer->m_iWeaponVolume = KNIFE_BODYHIT_VOLUME;
+			EMIT_SOUND(m_pPlayer->edict(), CHAN_WEAPON, "weapons/knife_stab.wav", VOL_NORM, ATTN_NORM);
+			m_pPlayer->m_iWeaponVolume = KNIFE_BODYHIT_VOLUME;
 
-				if (!pEntity->IsAlive())
-					return TRUE;
-				else
-					flVol = 0.1f;
+			if (!pEntity->IsAlive())
+				return TRUE;
+			else
+				flVol = 0.1f;
 
-				fHitWorld = FALSE;
-			}
+			fHitWorld = FALSE;
 		}
 
 		// play texture hit sound

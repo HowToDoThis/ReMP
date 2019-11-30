@@ -73,13 +73,7 @@ void CFlashbang::Holster(int skiplocal)
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5f;
 
 	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
-	{
-#ifndef REGAMEDLL_FIXES
-		// Moved to DestroyItem()
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_FLASHBANG);
-#endif
 		DestroyItem();
-	}
 
 	m_flStartThrow = 0;
 	m_flReleaseThrow = -1.0f;
@@ -250,12 +244,7 @@ void CFlashbang::WeaponIdle()
 			}
 			else
 			{
-			#ifdef REGAMEDLL_FIXES
 				iAnim = FLASHBANG_IDLE;
-			#else
-				// TODO: This is a bug?
-				iAnim = *(int *)&flRand;
-			#endif
 				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 75.0f / 30.0f;
 			}
 

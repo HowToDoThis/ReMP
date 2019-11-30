@@ -12,13 +12,9 @@ void CSG550::Spawn()
 	m_iDefaultAmmo = SG550_DEFAULT_GIVE;
 	m_flLastFire = 0;
 
-#ifdef REGAMEDLL_FIXES
 	m_flAccuracy = 0.2f;
-#endif
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = SG550_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -61,9 +57,7 @@ int CSG550::GetItemInfo(ItemInfo *p)
 
 BOOL CSG550::Deploy()
 {
-#ifdef REGAMEDLL_FIXES
 	m_flAccuracy = 0.2f;
-#endif
 
 	return DefaultDeploy("models/v_sg550.mdl", "models/p_sg550.mdl", SG550_DRAW, "rifle", UseDecrement() != FALSE);
 }
@@ -74,11 +68,7 @@ void CSG550::SecondaryAttack()
 	{
 	case 90: m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 40; break;
 	case 40: m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 15; break;
-#ifdef REGAMEDLL_FIXES
 	default:
-#else
-	case 15:
-#endif
 		m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 90; break;
 	}
 
@@ -163,18 +153,10 @@ void CSG550::SG550Fire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = SG550_DAMAGE;
-#endif
 	vecDir = m_pPlayer->FireBullets3(vecSrc, vecAiming, flSpread, 8192, 2, BULLET_PLAYER_556MM, flBaseDamage, SG550_RANGE_MODIFER, m_pPlayer->pev, true, m_pPlayer->random_seed);
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireSG550, 0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y,
 		int(m_pPlayer->pev->punchangle.x * 100), int(m_pPlayer->pev->punchangle.x * 100), 5, FALSE);

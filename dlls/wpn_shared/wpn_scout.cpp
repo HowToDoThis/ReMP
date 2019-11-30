@@ -11,9 +11,7 @@ void CSCOUT::Spawn()
 
 	m_iDefaultAmmo = SCOUT_DEFAULT_GIVE;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = SCOUT_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -73,11 +71,7 @@ void CSCOUT::SecondaryAttack()
 	{
 	case 90: m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 40; break;
 	case 40: m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 15; break;
-#ifdef REGAMEDLL_FIXES
 	default:
-#else
-	case 15:
-#endif
 		m_pPlayer->m_iFOV = m_pPlayer->pev->fov = 90; break;
 	}
 
@@ -157,18 +151,10 @@ void CSCOUT::SCOUTFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = SCOUT_DAMAGE;
-#endif
 	vecDir = m_pPlayer->FireBullets3(vecSrc, vecAiming, flSpread, 8192, 3, BULLET_PLAYER_762MM, flBaseDamage, SCOUT_RANGE_MODIFER, m_pPlayer->pev, true, m_pPlayer->random_seed);
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireScout, 0, (float *)&g_vecZero, (float *)&m_pPlayer->pev->angles, (vecDir.x * 1000), (vecDir.y * 1000),
 		int(m_pPlayer->pev->punchangle.x * 100), int(m_pPlayer->pev->punchangle.x * 100), FALSE, FALSE);
@@ -186,11 +172,9 @@ void CSCOUT::SCOUTFire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 
 void CSCOUT::Reload()
 {
-#ifdef REGAMEDLL_FIXES
 	// to prevent reload if not enough ammo
 	if (m_pPlayer->ammo_762nato <= 0)
 		return;
-#endif
 
 	if (DefaultReload(iMaxClip(), SCOUT_RELOAD, SCOUT_RELOAD_TIME))
 	{

@@ -11,9 +11,7 @@ void CXM1014::Spawn()
 
 	m_iDefaultAmmo = XM1014_DEFAULT_GIVE;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = XM1014_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -80,33 +78,15 @@ void CXM1014::PrimaryAttack()
 
 	if (m_iClip <= 0)
 	{
-#ifdef BUILD_LATEST_FIXES
 		if (!m_fInSpecialReload)
 		{
 			PlayEmptySound();
 
 			if (TheBots)
-			{
 				TheBots->OnEvent(EVENT_WEAPON_FIRED_ON_EMPTY, m_pPlayer);
-			}
 		}
 
 		Reload();
-#else
-		Reload();
-
-		if (!m_iClip)
-		{
-			PlayEmptySound();
-		}
-
-		if (TheBots)
-		{
-			TheBots->OnEvent(EVENT_WEAPON_FIRED_ON_EMPTY, m_pPlayer);
-		}
-
-		m_flNextPrimaryAttack = GetNextAttackDelay(1);
-#endif // #ifdef BUILD_LATEST_FIXES
 
 		return;
 	}
@@ -124,23 +104,11 @@ void CXM1014::PrimaryAttack()
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = XM1014_DAMAGE;
-#endif
 
-#ifdef REGAMEDLL_FIXES
 	m_pPlayer->FireBuckshots(6, vecSrc, vecAiming, XM1014_CONE_VECTOR, 3048, 0, flBaseDamage);
-#else
-	m_pPlayer->FireBullets(6, vecSrc, vecAiming, XM1014_CONE_VECTOR, 3048, BULLET_PLAYER_BUCKSHOT, 0);
-#endif
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireXM1014, 0, (float *)&g_vecZero, (float *)&g_vecZero, m_vVecAiming.x, m_vVecAiming.y, 7,
 		int(m_vVecAiming.x * 100), m_iClip == 0, FALSE);
@@ -150,11 +118,6 @@ void CXM1014::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", SUIT_SENTENCE, SUIT_REPEAT_OK);
 	}
-
-#ifndef REGAMEDLL_FIXES
-	if (m_iClip != 0)
-		m_flPumpTime = UTIL_WeaponTimeBase() + 0.125f;
-#endif
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.25);
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.25f;
@@ -184,13 +147,6 @@ void CXM1014::WeaponIdle()
 {
 	ResetEmptySound();
 	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
-
-#ifndef REGAMEDLL_FIXES
-	if (m_flPumpTime && m_flPumpTime < UTIL_WeaponTimeBase())
-	{
-		m_flPumpTime = 0;
-	}
-#endif
 
 	if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
 	{

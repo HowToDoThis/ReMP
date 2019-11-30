@@ -13,10 +13,8 @@ void CUSP::Spawn()
 	m_iDefaultAmmo = USP_DEFAULT_GIVE;
 	m_flAccuracy = 0.92f;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = USP_DAMAGE;
 	m_flBaseDamageSil = USP_DAMAGE_SIL;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -48,11 +46,7 @@ void CUSP::Precache()
 int CUSP::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
-#ifdef REGAMEDLL_FIXES
 	p->pszAmmo1 = "45acp";
-#else
-	p->pszAmmo1 = "45ACP";
-#endif // REGAMEDLL_FIXES
 	p->iMaxAmmo1 = MAX_AMMO_45ACP;
 	p->pszAmmo2 = nullptr;
 	p->iMaxAmmo2 = -1;
@@ -217,18 +211,11 @@ void CUSP::USPFire(float flSpread, float flCycleTime, BOOL fUseSemi)
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = (m_iWeaponState & WPNSTATE_USP_SILENCED) ? m_flBaseDamageSil : CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = (m_iWeaponState & WPNSTATE_USP_SILENCED) ? USP_DAMAGE_SIL : USP_DAMAGE;
-#endif
+
 	vecDir = m_pPlayer->FireBullets3(vecSrc, vecAiming, flSpread, 4096, 1, BULLET_PLAYER_45ACP, flBaseDamage, USP_RANGE_MODIFER, m_pPlayer->pev, true, m_pPlayer->random_seed);
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif // CLIENT_WEAPONS
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireUSP, 0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y,
 		(int)(m_pPlayer->pev->punchangle.x * 100), 0, m_iClip == 0, (m_iWeaponState & WPNSTATE_USP_SILENCED));

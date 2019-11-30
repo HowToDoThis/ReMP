@@ -78,10 +78,6 @@ void CSmokeGrenade::Holster(int skiplocal)
 	{
 		// no more smokegrenades!
 		// clear the smokegrenade of bits for HUD
-#ifndef REGAMEDLL_FIXES
-		// Moved to DestroyItem()
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_SMOKEGRENADE);
-#endif
 
 		DestroyItem();
 	}

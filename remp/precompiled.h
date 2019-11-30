@@ -28,7 +28,7 @@
 
 #pragma once
 
-#include "version/appversion.h"
+//#include "version/appversion.h"
 
 #include "osconfig.h"
 #include "basetypes.h"

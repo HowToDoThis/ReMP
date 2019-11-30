@@ -350,28 +350,7 @@ bool Q_IsMeanSpaceW(uchar16 wch)
 
 bool Q_IsUnprintableW(uchar16 c)
 {
-#ifdef UNICODE_FIXES
 	return !Q_iswprint(c);
-#else
-	switch (c)
-	{
-	case 0x202A:
-	case 0x202B:
-	case 0x202C:
-	case 0x202D:
-	case 0x202E:
-	case 0x206A:
-	case 0x206B:
-	case 0x206C:
-	case 0x206D:
-	case 0x206E:
-	case 0x206F:
-		return true;
-
-	default:
-		return false;
-	}
-#endif // UNICODE_FIXES
 }
 
 // Returns false if UTF-8 string contains invalid sequences.

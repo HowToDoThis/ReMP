@@ -59,9 +59,7 @@ private:
 	qstring_t m_string;
 };
 
-#ifdef USE_QSTRING
 #define string_t QString
-#endif
 
 #include "const.h"
 #include "edict.h"

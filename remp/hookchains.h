@@ -26,7 +26,8 @@
 *
 */
 
-#pragma once
+#ifndef HookChains_H
+#define HookChains_H
 
 template<typename t_ret, typename ...t_args>
 class IHookChain {
@@ -78,3 +79,5 @@ public:
 	virtual void registerHook(hookfunc_t hook, int priority = HC_PRIORITY_DEFAULT) = 0;
 	virtual void unregisterHook(hookfunc_t hook) = 0;
 };
+
+#endif

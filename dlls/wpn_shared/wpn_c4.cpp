@@ -77,24 +77,13 @@ void CC4::Holster(int skiplocal)
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5f;
 
-#ifdef REGAMEDLL_FIXES
 	if(m_bStartedArming)
-	{
 		m_pPlayer->SetProgressBarTime(0);
-	}
-#endif
 
 	m_bStartedArming = false;	// stop arming sequence
 
 	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
-	{
-#ifndef REGAMEDLL_FIXES
-		// Moved to DestroyItem()
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_C4);
-#endif
-
 		DestroyItem();
-	}
 
 	if (m_bHasShield)
 	{
@@ -111,14 +100,12 @@ void CC4::PrimaryAttack()
 	int inBombZone = (m_pPlayer->m_signals.GetState() & SIGNAL_BOMB) == SIGNAL_BOMB;
 	int onGround = (m_pPlayer->pev->flags & FL_ONGROUND) == FL_ONGROUND;
 
-#ifdef REGAMEDLL_FIXES
 	if (!onGround)
 	{
 		TraceResult tr;
 		UTIL_TraceLine(m_pPlayer->pev->origin, m_pPlayer->pev->origin + Vector(0, 0, -8192), ignore_monsters, m_pPlayer->edict(), &tr);
 		onGround = (tr.flFraction != 1.0 && m_pPlayer->pev->velocity.z == 0.0f);
 	}
-#endif
 
 	bool bPlaceBomb = (onGround && inBombZone);
 
@@ -146,11 +133,7 @@ void CC4::PrimaryAttack()
 		SendWeaponAnim(C4_ARM, UseDecrement() != FALSE);
 
 		// freeze the player in place while planting
-#ifdef REGAMEDLL_FIXES
 		m_pPlayer->ResetMaxSpeed();
-#else
-		SET_CLIENT_MAXSPEED(m_pPlayer->edict(), 1.0);
-#endif
 
 		m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 		m_pPlayer->SetProgressBarTime(C4_ARMING_ON_TIME);
@@ -175,11 +158,7 @@ void CC4::PrimaryAttack()
 					CSGameRules()->m_iC4Timer = int(pev->speed);
 				}
 
-#ifdef REGAMEDLL_FIXES
 				Vector vBombAngles = Vector(0, m_pPlayer->pev->angles[1] - 90.0, 0);
-#else
-				Vector vBombAngles = Vector(0, 0, 0);
-#endif
 				CGrenade *pBomb = CGrenade::ShootSatchelCharge(m_pPlayer->pev, m_pPlayer->pev->origin, vBombAngles);
 
 				MESSAGE_BEGIN(MSG_SPEC, SVC_DIRECTOR);
@@ -333,48 +312,13 @@ void CC4::KeyValue(KeyValueData *pkvd)
 
 void CC4::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
-#ifndef REGAMEDLL_FIXES
-	if (m_pPlayer)
-		return;
 
-	CBasePlayer *pPlayer = UTIL_PlayerByIndex(1);
-	if (pPlayer)
-	{
-		edict_t *m_pentOldCurBombTarget = pPlayer->m_pentCurBombTarget;
-		pPlayer->m_pentCurBombTarget = nullptr;
-
-		if (pev->speed != 0 && CSGameRules())
-		{
-			CSGameRules()->m_iC4Timer = int(pev->speed);
-		}
-
-		EMIT_SOUND(edict(), CHAN_WEAPON, "weapons/c4_plant.wav", VOL_NORM, ATTN_NORM);
-
-		CGrenade::ShootSatchelCharge(pPlayer->pev, pev->origin, Vector(0, 0, 0));
-
-		CGrenade *pBomb = nullptr;
-		while ((pBomb = UTIL_FindEntityByClassname(pBomb, "grenade")))
-		{
-			if (pBomb->m_bIsC4 && pBomb->m_flNextFreq == gpGlobals->time)
-			{
-				pBomb->pev->target = pev->target;
-				pBomb->pev->noise1 = pev->noise1;
-				break;
-			}
-		}
-
-		pPlayer->m_pentCurBombTarget = m_pentOldCurBombTarget;
-		SUB_Remove();
-	}
-#endif
 }
 
 float CC4::GetMaxSpeed()
 {
-#ifdef REGAMEDLL_FIXES
 	if (m_bStartedArming)
 		return 1.0f;
-#endif
 
 	return C4_MAX_SPEED;
 }

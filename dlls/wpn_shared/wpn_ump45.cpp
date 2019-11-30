@@ -13,9 +13,7 @@ void CUMP45::Spawn()
 	m_flAccuracy = 0.0f;
 	m_bDelayFire = false;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = UMP45_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -41,11 +39,7 @@ void CUMP45::Precache()
 int CUMP45::GetItemInfo(ItemInfo *p)
 {
 	p->pszName = STRING(pev->classname);
-#ifdef REGAMEDLL_FIXES
 	p->pszAmmo1 = "45acp";
-#else
-	p->pszAmmo1 = "45ACP";
-#endif
 	p->iMaxAmmo1 = MAX_AMMO_45ACP;
 	p->pszAmmo2 = nullptr;
 	p->iMaxAmmo2 = -1;
@@ -118,19 +112,11 @@ void CUMP45::UMP45Fire(float flSpread, float flCycleTime, BOOL fUseAutoAim)
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = UMP45_DAMAGE;
-#endif
 	vecDir = m_pPlayer->FireBullets3(vecSrc, vecAiming, flSpread, 8192, 1, BULLET_PLAYER_45ACP,
 		flBaseDamage, UMP45_RANGE_MODIFER, m_pPlayer->pev, false, m_pPlayer->random_seed);
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireUMP45, 0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y,
 		int(m_pPlayer->pev->punchangle.x * 100), int(m_pPlayer->pev->punchangle.y * 100), FALSE, FALSE);

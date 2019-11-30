@@ -11,9 +11,7 @@ void CM3::Spawn()
 
 	m_iDefaultAmmo = M3_DEFAULT_GIVE;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = M3_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -82,33 +80,15 @@ void CM3::PrimaryAttack()
 
 	if (m_iClip <= 0)
 	{
-#ifdef BUILD_LATEST_FIXES
 		if (!m_fInSpecialReload)
 		{
 			PlayEmptySound();
 
 			if (TheBots)
-			{
 				TheBots->OnEvent(EVENT_WEAPON_FIRED_ON_EMPTY, m_pPlayer);
-			}
 		}
 
 		Reload();
-#else
-		Reload();
-
-		if (!m_iClip)
-		{
-			PlayEmptySound();
-		}
-
-		if (TheBots)
-		{
-			TheBots->OnEvent(EVENT_WEAPON_FIRED_ON_EMPTY, m_pPlayer);
-		}
-
-		m_flNextPrimaryAttack = GetNextAttackDelay(1);
-#endif // #ifdef BUILD_LATEST_FIXES
 
 		return;
 	}
@@ -126,23 +106,11 @@ void CM3::PrimaryAttack()
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = M3_DAMAGE;
-#endif
 
-#ifdef REGAMEDLL_FIXES
 	m_pPlayer->FireBuckshots(9, vecSrc, vecAiming, M3_CONE_VECTOR, 3000, 0, flBaseDamage);
-#else
-	m_pPlayer->FireBullets(9, vecSrc, vecAiming, M3_CONE_VECTOR, 3000, BULLET_PLAYER_BUCKSHOT, 0);
-#endif
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	PLAYBACK_EVENT_FULL(flag, m_pPlayer->edict(), m_usFireM3, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, 0, 0, FALSE, FALSE);
 
@@ -151,11 +119,6 @@ void CM3::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", SUIT_SENTENCE, SUIT_REPEAT_OK);
 	}
-
-#ifndef REGAMEDLL_FIXES
-	if (m_iClip != 0)
-		m_flPumpTime = UTIL_WeaponTimeBase() + 0.5f;
-#endif
 
 	m_flNextPrimaryAttack = GetNextAttackDelay(0.875);
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.875f;
@@ -187,13 +150,6 @@ void CM3::WeaponIdle()
 {
 	ResetEmptySound();
 	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
-
-#ifndef REGAMEDLL_FIXES
-	if (m_flPumpTime && m_flPumpTime < UTIL_WeaponTimeBase())
-	{
-		m_flPumpTime = 0;
-	}
-#endif
 
 	if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
 	{

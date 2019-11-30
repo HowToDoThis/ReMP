@@ -12,9 +12,7 @@ void CELITE::Spawn()
 	m_iDefaultAmmo = ELITE_DEFAULT_GIVE;
 	m_flAccuracy = 0.88f;
 
-#ifdef REGAMEDLL_API
 	CSPlayerWeapon()->m_flBaseDamage = ELITE_DAMAGE;
-#endif
 
 	// Get ready to fall down
 	FallInit();
@@ -99,11 +97,7 @@ void CELITE::ELITEFire(float flSpread, float flCycleTime, BOOL fUseSemi)
 	Vector vecSrc;
 	Vector vecDir;
 
-#ifdef REGAMEDLL_FIXES
 	flCycleTime -= 0.078f;
-#else
-	flCycleTime -= 0.125f;
-#endif
 
 	if (++m_iShotsFired > 1)
 	{
@@ -157,17 +151,9 @@ void CELITE::ELITEFire(float flSpread, float flCycleTime, BOOL fUseSemi)
 	vecSrc = m_pPlayer->GetGunPosition();
 	vecAiming = gpGlobals->v_forward;
 
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
-#ifdef REGAMEDLL_API
 	float flBaseDamage = CSPlayerWeapon()->m_flBaseDamage;
-#else
-	float flBaseDamage = ELITE_DAMAGE;
-#endif
 
 	if (m_iWeaponState & WPNSTATE_ELITE_LEFT)
 	{

@@ -4683,7 +4683,6 @@ void EXT_FUNC CBasePlayer::__API_HOOK(PostThink)()
 		pev->flTimeStepSound = int(m_flTimeStepSound);
 
 pt_end:
-#ifdef CLIENT_WEAPONS
 	// Decay timers on weapons
 	// go through all of the weapons and make a list of the ones to pack
 	for (int i = 0; i < MAX_ITEM_TYPES; i++)
@@ -4716,7 +4715,6 @@ pt_end:
 
 	if (m_flNextAttack < -0.001)
 		m_flNextAttack = -0.001;
-#endif // CLIENT_WEAPONS
 
 	// Track button info so we can detect 'pressed' and 'released' buttons next frame
 	m_afButtonLast = pev->button;
@@ -4906,10 +4904,8 @@ void CBasePlayer::SetScoreAttrib(CBasePlayer *dest)
 	if (m_bIsVIP)
 		state |= SCORE_STATUS_VIP;
 
-#ifdef BUILD_LATEST
 	if (AreRunningBeta() && m_bHasDefuser)
 		state |= SCORE_STATUS_DEFKIT;
-#endif
 
 	if (gmsgScoreAttrib)
 	{
@@ -5003,11 +4999,7 @@ void EXT_FUNC CBasePlayer::__API_HOOK(Spawn)()
 	m_iChaseTarget = 1;
 	m_bEscaped = false;
 	m_tmNextRadarUpdate = gpGlobals->time;
-
-#ifdef BUILD_LATEST
 	m_tmNextAccountHealthUpdate = gpGlobals->time;
-#endif
-
 	m_vLastOrigin = Vector(0, 0, 0);
 	m_iCurrentKickVote = 0;
 	m_flNextVoteTime = 0;
@@ -6266,13 +6258,8 @@ int EXT_FUNC CBasePlayer::__API_HOOK(GiveAmmo)(int iCount, const char *szName, i
 // Called every frame by the player PreThink
 void CBasePlayer::ItemPreFrame()
 {
-#ifdef CLIENT_WEAPONS
 	if (m_flNextAttack > 0)
 		return;
-#else
-	if (gpGlobals->time < m_flNextAttack)
-		return;
-#endif
 
 	if (!m_pActiveItem)
 		return;
@@ -6298,11 +6285,7 @@ void CBasePlayer::ItemPostFrame()
 		}
 	}
 
-#ifdef CLIENT_WEAPONS
 	if (m_flNextAttack > 0)
-#else
-	if (gpGlobals->time < m_flNextAttack)
-#endif
 		return;
 
 	ImpulseCommands();

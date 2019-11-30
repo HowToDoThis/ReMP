@@ -720,11 +720,7 @@ void CBasePlayerWeapon::FireRemaining(int &shotsFired, float &shootTime, BOOL bI
 	Vector vecDir;
 
 	int flag;
-#ifdef CLIENT_WEAPONS
 	flag = FEV_NOTHOST;
-#else
-	flag = 0;
-#endif
 
 	if (bIsGlock)
 	{
@@ -757,11 +753,7 @@ void CBasePlayerWeapon::FireRemaining(int &shotsFired, float &shootTime, BOOL bI
 
 BOOL CanAttack(float attack_time, float curtime, BOOL isPredicted)
 {
-#ifdef CLIENT_WEAPONS
 	if (!isPredicted)
-#else
-	if (1)
-#endif
 	{
 		return (attack_time <= curtime) ? TRUE : FALSE;
 	}
@@ -1005,17 +997,13 @@ void CBasePlayerWeapon::ItemPostFrame()
 			}
 		}
 
-#ifdef BUILD_LATEST
 		HandleInfiniteAmmo();
-#endif
 
 		WeaponIdle();
 		return;
 	}
 
-#ifdef BUILD_LATEST
 	HandleInfiniteAmmo();
-#endif
 
 	// catch all
 	if (ShouldWeaponIdle())
@@ -1190,10 +1178,8 @@ void CBasePlayerWeapon::SendWeaponAnim(int iAnim, int skiplocal)
 {
 	m_pPlayer->pev->weaponanim = iAnim;
 
-#ifdef CLIENT_WEAPONS
 	if (skiplocal && ENGINE_CANSKIP(m_pPlayer->edict()))
 		return;
-#endif
 
 	MESSAGE_BEGIN(MSG_ONE, SVC_WEAPONANIM, nullptr, m_pPlayer->pev);
 		WRITE_BYTE(iAnim);		// sequence number
@@ -1394,10 +1380,7 @@ bool EXT_FUNC CBasePlayerWeapon::__API_HOOK(DefaultShotgunReload)(int iAnim, int
 
 		m_flTimeWeaponIdle = m_flNextReload = UTIL_WeaponTimeBase() + fDelay;
 	}
-	else
-#ifdef BUILD_LATEST_FIXES
-		if (m_flTimeWeaponIdle <= UTIL_WeaponTimeBase())
-#endif
+	else if (m_flTimeWeaponIdle <= UTIL_WeaponTimeBase())
 	{
 		m_iClip++;
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
