@@ -61,10 +61,7 @@ public:
 	virtual int Restore(CRestore &restore);
 	virtual int ObjectCaps() { return (CBaseDelay::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 	virtual void Think();
-
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 
 public:
 	static TYPEDESCRIPTION m_SaveData[];
@@ -166,7 +163,6 @@ public:
 	virtual void Spawn();
 	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
 	virtual void OnDestroy();
 
@@ -179,7 +175,6 @@ public:
 		int renderfx;
 	};
 	CUtlMap<int, RenderGroup_t> m_RenderGroups;
-#endif
 
 };
 
@@ -218,11 +213,7 @@ class CTriggerHurt: public CBaseTrigger
 {
 public:
 	virtual void Spawn();
-
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
-
 	void EXPORT RadiationThink();
 };
 
@@ -295,9 +286,7 @@ class CTriggerOnce: public CTriggerMultiple
 public:
 	virtual void Spawn();
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 };
 
 #define SF_TRIGGER_COUNTER_NOMESSAGE BIT(0)
@@ -361,9 +350,7 @@ public:
 	int m_changeTarget;
 	float m_changeTargetDelay;
 
-#ifdef REGAMEDLL_FIXES
 	float m_flPercentOfPlayers;
-#endif
 };
 
 class CLadder: public CBaseTrigger
@@ -384,9 +371,7 @@ public:
 	virtual void KeyValue(KeyValueData *pkvd);
 	virtual void Touch(CBaseEntity *pOther);
 
-#ifdef REGAMEDLL_FIXES
 	virtual void Restart();
-#endif
 };
 
 class CTriggerTeleport: public CBaseTrigger

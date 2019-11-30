@@ -530,9 +530,7 @@ void CHostage::Remove()
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
 
-#ifdef REGAMEDLL_FIXES
 	pev->deadflag = DEAD_DEAD;
-#endif
 
 	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
 	pev->nextthink = -1;
@@ -581,7 +579,6 @@ bool CHostage::CanTakeDamage(entvars_t *pevAttacker)
 {
 	bool bCanTakeDmg = true; // default behaviour
 
-#ifdef REGAMEDLL_ADD
 	CBasePlayer *pAttacker = CBasePlayer::Instance(pevAttacker);
 	switch ((int)hostagehurtable.value)
 	{
@@ -597,7 +594,6 @@ bool CHostage::CanTakeDamage(entvars_t *pevAttacker)
 	default:
 		break;
 	}
-#endif
 
 	return bCanTakeDmg;
 }
@@ -612,10 +608,8 @@ void CHostage::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir
 
 BOOL CHostage::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
 {
-#ifdef REGAMEDLL_ADD
 	if (!CanTakeDamage(pevAttacker))
 		return FALSE;
-#endif
 
 	float flActualDamage = GetModifiedDamage(flDamage, m_LastHitGroup);
 
@@ -853,11 +847,7 @@ void CHostage::ApplyHostagePenalty(CBasePlayer *pAttacker)
 		}
 		else if (pAttacker->m_iHostagesKilled >= iHostagePenalty)
 		{
-#ifdef REGAMEDLL_FIXES
 			SERVER_COMMAND(UTIL_VarArgs("kick #%d \"For killing too many hostages\"\n", GETPLAYERUSERID(pAttacker->edict())));
-#else
-			CLIENT_COMMAND(pAttacker->edict(), "disconnect\n");
-#endif
 		}
 	}
 }
@@ -867,13 +857,8 @@ void CHostage::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useTy
 	if (!pActivator->IsPlayer())
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	if (!IsAlive())
 		return;
-#else
-	if (pev->takedamage == DAMAGE_NO)
-		return;
-#endif
 
 	CBasePlayer *pPlayer = (CBasePlayer *)pActivator;
 	if (pPlayer->m_iTeam != CT)
@@ -1390,10 +1375,8 @@ void CHostage::PreThink()
 void Hostage_RegisterCVars()
 {
 // These cvars are only used in czero
-#ifdef REGAMEDLL_FIXES
 	if (!AreImprovAllowed())
 		return;
-#endif
 
 	CVAR_REGISTER(&cv_hostage_debug);
 	CVAR_REGISTER(&cv_hostage_stop);
@@ -1432,11 +1415,9 @@ void CHostageManager::ServerActivate()
 			m_chatter.AddSound(snd.type, snd.fileName);
 		}
 
-#ifdef REGAMEDLL_ADD
 		if (!AreRunningCZero()) {
 			LoadNavigationMap();
 		}
-#endif
 	}
 }
 

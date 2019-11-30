@@ -7,17 +7,13 @@ void CMapInfo::OnCreate()
 	m_flBombRadius = 500.0f;
 	m_iBuyingStatus = BUYING_EVERYONE;
 
-#ifdef REGAMEDLL_ADD
 	if (g_pMapInfo)
 	{
 		// Should only be one of these.
 		ALERT(at_warning, "Warning: Multiple info_map_parameters entities in map!\n");
 	}
 	else
-#endif
-	{
 		g_pMapInfo = this;
-	}
 }
 
 void CMapInfo::OnDestroy()

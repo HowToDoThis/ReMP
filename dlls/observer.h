@@ -35,6 +35,4 @@
 int GetForceCamera(CBasePlayer *pObserver);
 void UpdateClientEffects(CBasePlayer *pObserver, int oldMode);
 
-#ifdef REGAMEDLL_API
 EXT_FUNC int GetForceCamera_OrigFunc(CBasePlayer *pObserver);
-#endif

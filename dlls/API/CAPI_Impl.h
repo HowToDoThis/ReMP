@@ -31,7 +31,6 @@
 #include "archtypes.h"
 #include "regamedll_api.h"
 
-#ifdef REGAMEDLL_API
 
 #define __API_HOOK(fname)\
 	fname##_OrigFunc
@@ -119,26 +118,6 @@
 	ret functionName() {\
 		return g_ReGameHookchains.m_##functionName.callChain(functionName##_OrigFunc);\
 	}
-#else
-
-#define __API_HOOK(fname)\
-	fname
-
-#define LINK_HOOK_CLASS_VOID_CHAIN(...)
-#define LINK_HOOK_CLASS_VOID_CHAIN2(...)
-#define LINK_HOOK_CLASS_CHAIN(...)
-#define LINK_HOOK_CLASS_CHAIN2(...)
-#define LINK_HOOK_CLASS_CHAIN3(...)
-#define LINK_HOOK_CLASS_VOID_CUSTOM_CHAIN(...)
-#define LINK_HOOK_CLASS_VOID_CUSTOM_CHAIN2(...)
-#define LINK_HOOK_CLASS_CUSTOM_CHAIN(...)
-#define LINK_HOOK_CLASS_CUSTOM_CHAIN2(...)
-#define LINK_HOOK_VOID_CHAIN(...)
-#define LINK_HOOK_VOID_CHAIN2(...)
-#define LINK_HOOK_CHAIN(...)
-#define LINK_HOOK_CHAIN2(...)
-
-#endif // REGAMEDLL_API
 
 #define GAMEHOOK_REGISTRY(func)\
 	IReGameHookRegistry_##func *CReGameHookchains::func() { return &m_##func; }

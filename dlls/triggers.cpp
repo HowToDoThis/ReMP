@@ -98,18 +98,13 @@ void CAutoTrigger::Think()
 	{
 		SUB_UseTargets(this, m_triggerType, 0);
 
-#ifdef REGAMEDLL_FIXES
 		if (pev->spawnflags & SF_AUTO_NORESET)
-#else
-		if (pev->spawnflags & SF_AUTO_FIREONCE)
-#endif
 		{
 			UTIL_Remove(this);
 		}
 	}
 }
 
-#ifdef REGAMEDLL_FIXES
 void CAutoTrigger::Restart()
 {
 	if (pev->spawnflags & SF_AUTO_NORESET)
@@ -117,7 +112,6 @@ void CAutoTrigger::Restart()
 
 	pev->nextthink = gpGlobals->time + 0.1f;
 }
-#endif
 
 TYPEDESCRIPTION CTriggerRelay::m_SaveData[] =
 {
@@ -236,29 +230,6 @@ void CMultiManager::Spawn()
 
 void CMultiManager::Restart()
 {
-#ifndef REGAMEDLL_FIXES
-	edict_t *pentTarget = nullptr;
-
-	for (int i = 0; i < m_cTargets; i++)
-	{
-		const char *name = STRING(m_iTargetName[i]);
-
-		if (!name)
-			continue;
-
-		pentTarget = FIND_ENTITY_BY_TARGETNAME(pentTarget, STRING(pev->target));
-
-		if (FNullEnt(pentTarget))
-			break;
-
-		CBaseEntity *pTarget = static_cast<CBaseEntity *>(CBaseEntity::Instance(pentTarget));
-		if (pTarget && !(pTarget->pev->flags & FL_KILLME))
-		{
-			pTarget->Restart();
-		}
-	}
-#endif
-
 	SetThink(nullptr);
 
 	if (IsClone())
@@ -330,11 +301,9 @@ CMultiManager *CMultiManager::Clone()
 	Q_memcpy(pMulti->m_iTargetName, m_iTargetName, sizeof(m_iTargetName));
 	Q_memcpy(pMulti->m_flTargetDelay, m_flTargetDelay, sizeof(m_flTargetDelay));
 
-#ifdef REGAMEDLL_FIXES
 	// Add entity in hash table, otherwise,
 	// it will not be reset for the entity via UTIL_RestartRound
 	MAKE_STRING_CLASS("multi_manager", pMulti->pev);
-#endif
 
 	return pMulti;
 }
@@ -368,8 +337,6 @@ void CRenderFxManager::Spawn()
 {
 	pev->solid = SOLID_NOT;
 }
-
-#ifdef REGAMEDLL_FIXES
 
 void CRenderFxManager::OnDestroy()
 {
@@ -411,7 +378,6 @@ void CRenderFxManager::Restart()
 	}
 }
 
-#endif // REGAMEDLL_FIXES
 
 void CRenderFxManager::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
@@ -426,7 +392,6 @@ void CRenderFxManager::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 
 		entvars_t *pevTarget = VARS(pentTarget);
 
-#ifdef REGAMEDLL_FIXES
 		RenderGroup_t group;
 		group.renderfx = pevTarget->renderfx;
 		group.renderamt = pevTarget->renderamt;
@@ -437,7 +402,6 @@ void CRenderFxManager::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 		if (m_RenderGroups.Find(entityIndex) == m_RenderGroups.InvalidIndex()) {
 			m_RenderGroups.Insert(entityIndex, group);
 		}
-#endif
 
 		if (!(pev->spawnflags & SF_RENDER_MASKFX))
 			pevTarget->renderfx = pev->renderfx;
@@ -582,7 +546,6 @@ void CTriggerCDAudio::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	PlayTrack(pCaller->edict());
 }
 
-#ifdef REGAMEDLL_FIXES
 const char *g_szMP3trackFileMap[] =
 {
 	"", "",
@@ -614,7 +577,6 @@ const char *g_szMP3trackFileMap[] =
 	"media/Suspense05.mp3",
 	"media/Suspense07.mp3"
 };
-#endif
 
 void PlayCDTrack(edict_t *pClient, int iTrack)
 {
@@ -630,21 +592,11 @@ void PlayCDTrack(edict_t *pClient, int iTrack)
 
 	if (iTrack == -1)
 	{
-#ifdef REGAMEDLL_FIXES
 		CLIENT_COMMAND(pClient, "mp3 stop\n");
-#else
-		CLIENT_COMMAND(pClient, "cd stop\n");
-#endif
 	}
 	else
 	{
-#ifdef REGAMEDLL_FIXES
 		CLIENT_COMMAND(pClient, UTIL_VarArgs("mp3 play %s\n", g_szMP3trackFileMap[iTrack]));
-#else
-		char string[64];
-		Q_sprintf(string, "cd play %3d\n", iTrack);
-		CLIENT_COMMAND(pClient, string);
-#endif
 	}
 }
 
@@ -744,7 +696,6 @@ void CTriggerHurt::Spawn()
 	UTIL_SetOrigin(pev, pev->origin);
 }
 
-#ifdef REGAMEDLL_FIXES
 void CTriggerHurt::Restart()
 {
 	Vector mins, maxs;
@@ -757,7 +708,6 @@ void CTriggerHurt::Restart()
 
 	UTIL_SetSize(pev, mins, maxs);
 }
-#endif
 
 // trigger hurt that causes radiation will do a radius
 // check and set the player's geiger counter level
@@ -864,11 +814,7 @@ void CBaseTrigger::HurtTouch(CBaseEntity *pOther)
 	{
 		if (pev->dmgtime > gpGlobals->time)
 		{
-#ifdef REGAMEDLL_FIXES
 			if (gpGlobals->time >= pev->pain_finished)
-#else
-			if (gpGlobals->time != pev->pain_finished)
-#endif
 			{
 				// too early to hurt again, and not same frame with a different entity
 				if (!pOther->IsPlayer())
@@ -904,11 +850,7 @@ void CBaseTrigger::HurtTouch(CBaseEntity *pOther)
 	else
 	{
 		// Original code: single player
-#ifdef REGAMEDLL_FIXES
 		if (pev->dmgtime > gpGlobals->time && gpGlobals->time >= pev->pain_finished)
-#else
-		if (pev->dmgtime > gpGlobals->time && gpGlobals->time != pev->pain_finished)
-#endif
 		{
 			// too early to hurt again, and not same frame with a different entity
 			return;
@@ -997,22 +939,16 @@ LINK_ENTITY_TO_CLASS(trigger_once, CTriggerOnce, CCSTriggerOnce)
 
 void CTriggerOnce::Spawn()
 {
-#ifdef REGAMEDLL_FIXES
 	m_flWait = -2;
-#else
-	m_flWait = -1;
-#endif
 
 	CTriggerMultiple::Spawn();
 }
 
-#ifdef REGAMEDLL_FIXES
 void CTriggerOnce::Restart()
 {
 	m_flWait = -2;
 	CTriggerMultiple::Spawn();
 }
-#endif
 
 void CBaseTrigger::MultiTouch(CBaseEntity *pOther)
 {
@@ -1078,11 +1014,9 @@ void CBaseTrigger::ActivateMultiTrigger(CBaseEntity *pActivator)
 		SetTouch(nullptr);
 		pev->nextthink = gpGlobals->time + 0.1f;
 
-#ifdef REGAMEDLL_FIXES
 		if (!(pev->spawnflags & SF_TRIGGER_NORESET) && m_flWait == -2)
 			SetThink(nullptr);
 		else
-#endif
 			SetThink(&CBaseTrigger::SUB_Remove);
 	}
 }
@@ -1226,14 +1160,12 @@ void CChangeLevel::KeyValue(KeyValueData *pkvd)
 		m_changeTargetDelay = Q_atof(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
-#ifdef REGAMEDLL_FIXES
 	else if (FStrEq(pkvd->szKeyName, "percent_of_players"))
 	{
 		m_flPercentOfPlayers = Q_atof(pkvd->szValue);
 		m_flPercentOfPlayers = clamp(m_flPercentOfPlayers, 0.0f, 1.0f);
 		pkvd->fHandled = TRUE;
 	}
-#endif
 	else
 	{
 		CBaseTrigger::KeyValue(pkvd);
@@ -1371,7 +1303,6 @@ void CChangeLevel::TouchChangeLevel(CBaseEntity *pOther)
 	if (!pOther->IsPlayer())
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	if (m_flPercentOfPlayers > 0.0f)
 	{
 		int playersInCount = 0;
@@ -1381,7 +1312,6 @@ void CChangeLevel::TouchChangeLevel(CBaseEntity *pOther)
 		if (m_flPercentOfPlayers > float(playersInCount / playersCount))
 			return;
 	}
-#endif
 
 	ChangeLevelNow(pOther);
 }
@@ -1660,14 +1590,12 @@ void CTriggerPush::Spawn()
 	UTIL_SetOrigin(pev, pev->origin);
 }
 
-#ifdef REGAMEDLL_FIXES
 void CTriggerPush::Restart()
 {
 	auto tempDir = pev->movedir;
 	Spawn();
 	pev->movedir = tempDir;
 }
-#endif
 
 void CTriggerPush::Touch(CBaseEntity *pOther)
 {
@@ -1802,10 +1730,8 @@ void CBuyZone::Spawn()
 
 void CBuyZone::BuyTouch(CBaseEntity *pOther)
 {
-#ifdef REGAMEDLL_ADD
 	if (buytime.value == 0.0f)
 		return;
-#endif
 
 	if (!pOther->IsPlayer())
 		return;
@@ -1814,10 +1740,8 @@ void CBuyZone::BuyTouch(CBaseEntity *pOther)
 
 	if (pev->team == UNASSIGNED || pev->team == pPlayer->m_iTeam)
 	{
-#ifdef REGAMEDLL_FIXES
 		if (!CSGameRules()->CanPlayerBuy(pPlayer))
 			return;
-#endif
 
 		pPlayer->m_signals.Signal(SIGNAL_BUY);
 	}
@@ -1858,11 +1782,7 @@ void CBombTarget::BombTargetTouch(CBaseEntity *pOther)
 
 	CBasePlayer *pPlayer = static_cast<CBasePlayer *>(pOther);
 
-	if (pPlayer->m_bHasC4
-#ifdef REGAMEDLL_FIXES
-		&& (legacy_bombtarget_touch.value || IsPlayerInBombSite(pPlayer))
-#endif
-	)
+	if (pPlayer->m_bHasC4 && (legacy_bombtarget_touch.value || IsPlayerInBombSite(pPlayer)))
 	{
 		pPlayer->m_signals.Signal(SIGNAL_BOMB);
 		pPlayer->m_pentCurBombTarget = ENT(pev);

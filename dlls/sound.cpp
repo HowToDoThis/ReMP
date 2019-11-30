@@ -1172,11 +1172,7 @@ int SENTENCEG_PlayRndI(edict_t *entity, int isentenceg, float volume, float atte
 
 	ipick = USENTENCEG_Pick(isentenceg, name);
 
-#ifndef REGAMEDLL_FIXES
-	if (ipick > 0 && name)
-#else
 	if (ipick > 0 /*&& name[0] != '\0'*/)
-#endif
 	{
 		EMIT_SOUND_DYN(entity, CHAN_VOICE, name, volume, attenuation, flags, pitch);
 	}
@@ -1890,13 +1886,11 @@ void CSpeaker::SpeakerThink()
 	else
 		szSoundFile = (char *)STRING(pev->message);
 
-#ifdef REGAMEDLL_FIXES
 	if (szSoundFile == nullptr)
 	{
 		// if is null - return;
 		return;
 	}
-#endif
 
 	if (szSoundFile[0] == '!')
 	{

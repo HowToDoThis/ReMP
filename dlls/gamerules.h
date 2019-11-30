@@ -809,9 +809,7 @@ public:
 
 extern CGameRules DLLEXPORT *g_pGameRules;
 
-#ifdef REGAMEDLL_API
 CGameRules *InstallGameRules_OrigFunc();
-#endif
 
 CGameRules *InstallGameRules();
 
@@ -830,69 +828,46 @@ inline void CHalfLifeMultiplay::TerminateRound(float tmDelay, int iWinStatus)
 
 inline float CHalfLifeMultiplay::GetRoundRemainingTimeReal() const
 {
-#ifdef REGAMEDLL_FIXES
 	return m_iRoundTimeSecs - gpGlobals->time + m_fRoundStartTimeReal;
-#else
-	return GetRoundRemainingTime();
-#endif
 }
 
 inline float CHalfLifeMultiplay::GetRoundRespawnTime() const
 {
-#ifdef REGAMEDLL_ADD
 	return roundrespawn_time.value;
-#else
-	return ROUND_RESPAWN_TIME;
-#endif
 }
 
 inline bool CHalfLifeMultiplay::IsFreeForAll() const
 {
-#ifdef REGAMEDLL_ADD
 	if (freeforall.value != 0.0f)
 		return true;
-#endif
+
 	return false;
 }
 
 inline float CHalfLifeMultiplay::GetRoundRestartDelay() const
 {
-#ifdef REGAMEDLL_ADD
 	return round_restart_delay.value;
-#else
-	return ROUND_BEGIN_DELAY;
-#endif
 }
 
 inline bool HasRoundInfinite(int flags = 0)
 {
-#ifdef REGAMEDLL_ADD
 	if (round_infinite.string[0] == '1')
 		return true;
 
 	if (flags && (UTIL_ReadFlags(round_infinite.string) & flags))
 		return true;
 
-#endif
 	return false;
 }
 
 inline float CGameRules::GetItemKillDelay()
 {
-#ifdef REGAMEDLL_ADD
 	return item_staytime.value;
-#else
-	return ITEM_KILL_DELAY;
-#endif
 }
 
 inline float CGameRules::GetRadioTimeout()
 {
-#ifdef REGAMEDLL_ADD
 	return radio_timeout.value;
-#else
-	return RADIO_TIMEOUT;
-#endif
 }
 
 bool IsBotSpeaking();

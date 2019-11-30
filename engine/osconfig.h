@@ -48,10 +48,7 @@
 #include <functional>
 
 // enable SSE code only if it's enabled in compiler options
-#if (defined(REHLDS_SSE) || defined(REGAMEDLL_SSE)) && (defined(__SSE__) || defined(__SSE2__) || defined(_M_IX86_FP) || defined(_M_AMD64) || defined(_M_X64))
-	// #error "SSE enabled"
-	#define HAVE_SSE
-#endif
+#define HAVE_SSE
 
 #ifdef _WIN32 // WINDOWS
 	#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers

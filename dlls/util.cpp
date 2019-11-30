@@ -416,21 +416,6 @@ CBaseEntity *UTIL_FindEntityGeneric(const char *szWhatever, const Vector &vecSrc
 	return pEntity;
 }
 
-#ifndef REGAMEDLL_FIXES
-CBasePlayer *EXT_FUNC UTIL_PlayerByIndex(int playerIndex)
-{
-	CBasePlayer *pPlayer = nullptr;
-	if (playerIndex > 0 && playerIndex <= gpGlobals->maxClients)
-	{
-		edict_t *pPlayerEdict = INDEXENT(playerIndex);
-		if (pPlayerEdict && !pPlayerEdict->free)
-			pPlayer = CBasePlayer::Instance(pPlayerEdict);
-	}
-
-	return pPlayer;
-}
-#endif
-
 void UTIL_MakeVectors(const Vector &vecAngles)
 {
 	MAKE_VECTORS(vecAngles);
@@ -928,11 +913,7 @@ real_t UTIL_ApproachAngle(float target, float value, float speed)
 {
 	target = UTIL_AngleMod(target);
 
-#ifdef REGAMEDLL_FIXES
 	value = UTIL_AngleMod(value);
-#else
-	value = UTIL_AngleMod(target);
-#endif
 
 	float delta = target - value;
 	if (speed < 0.0f)
@@ -1453,10 +1434,8 @@ void UTIL_Remove(CBaseEntity *pEntity)
 	if (!pEntity)
 		return;
 
-#ifdef REGAMEDLL_FIXES
 	if (pEntity->pev == VARS(eoNullEntity) || pEntity->IsPlayer() || (pEntity->pev->flags & FL_KILLME) == FL_KILLME)
 		return;
-#endif
 
 	pEntity->UpdateOnRemove();
 
@@ -1531,11 +1510,6 @@ void UTIL_RemoveOther(const char *szClassname, int nRemoveCount)
 	CBaseEntity *pEntity = nullptr;
 	while ((pEntity = UTIL_FindEntityByClassname(pEntity, szClassname)))
 	{
-#ifndef REGAMEDLL_FIXES
-		if (nRemoveCount > 0 && num++ >= nRemoveCount)
-			break;
-#endif
-
 		UTIL_Remove(pEntity);
 	}
 }
@@ -1653,14 +1627,11 @@ int UTIL_ReadFlags(const char *c)
 // Determine whether bots can be used or not
 bool UTIL_AreBotsAllowed()
 {
-#ifdef REGAMEDLL_ADD
 	if (g_engfuncs.pfnEngCheckParm == nullptr)
 		return false;
-#endif
 
 	if (AreRunningCZero())
 	{
-#ifdef REGAMEDLL_ADD
 		// If they pass in -nobots, don't allow bots.  This is for people who host servers, to
 		// allow them to disallow bots to enforce CPU limits.
 		int nobots = ENG_CHECK_PARM("-nobots", nullptr);
@@ -1668,12 +1639,10 @@ bool UTIL_AreBotsAllowed()
 		{
 			return false;
 		}
-#endif
 
 		return true;
 	}
 
-#ifdef REGAMEDLL_ADD
 	// let enables zBot by default from listen server?
 	if (!IS_DEDICATED_SERVER())
 	{
@@ -1686,7 +1655,6 @@ bool UTIL_AreBotsAllowed()
 	{
 		return true;
 	}
-#endif
 
 	return false;
 }
@@ -1720,14 +1688,12 @@ bool UTIL_AreHostagesImprov()
 		return true;
 	}
 
-#ifdef REGAMEDLL_ADD
 	// someday in CS 1.6
 	int improv = ENG_CHECK_PARM("-host-improv", nullptr);
 	if (improv)
 	{
 		return true;
 	}
-#endif
 
 	return false;
 }

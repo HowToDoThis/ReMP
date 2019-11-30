@@ -36,12 +36,7 @@
 #define SOUND_FLASHLIGHT_ON  "items/flashlight1.wav"
 #define SOUND_FLASHLIGHT_OFF "items/flashlight1.wav"
 
-#ifdef REGAMEDLL_FIXES
 const int MIN_BUY_TIME = 0;
-#else
-const int MIN_BUY_TIME = 15; // the minimum threshold values for cvar mp_buytime 15 sec's
-#endif
-
 const int MAX_PLAYER_NAME_LENGTH    = 32;
 const int MAX_AUTOBUY_LENGTH        = 256;
 const int MAX_REBUY_LENGTH          = 256;
@@ -347,14 +342,9 @@ public:
 	virtual BOOL AddPlayerItem(CBasePlayerItem *pItem);
 	virtual BOOL RemovePlayerItem(CBasePlayerItem *pItem);
 	virtual int GiveAmmo(int iAmount, const char *szName, int iMax = -1);
-#ifndef REGAMEDLL_API
-	virtual void StartSneaking() { m_tSneaking = gpGlobals->time - 1; }
-	virtual void StopSneaking() { m_tSneaking = gpGlobals->time + 30; }
-#else
 	virtual void OnCreate();
 	virtual void OnDestroy();
 	void StartSneaking() { m_tSneaking = gpGlobals->time - 1; };
-#endif
 
 	virtual BOOL IsSneaking() { return m_tSneaking <= gpGlobals->time; }
 	virtual BOOL IsAlive() { return (pev->deadflag == DEAD_NO && pev->health > 0.0f); }
@@ -877,12 +867,9 @@ public:
 	float m_silentTimestamp;
 	MusicState m_musicState;
 	float m_flLastCommandTime[COMMANDS_TO_TRACK];
-
-#ifdef BUILD_LATEST
 	int m_iLastAccount;
 	int m_iLastClientHealth;
 	float m_tmNextAccountHealthUpdate;
-#endif
 };
 
 class CWShield: public CBaseEntity

@@ -143,9 +143,7 @@ public:
 	virtual void Precache();
 	virtual void Restart();
 	virtual void KeyValue(KeyValueData *pkvd);
-#ifdef REGAMEDLL_FIXES
 	virtual void SetObjectCollisionBox();
-#endif
 
 public:
 	void EXPORT ArmouryTouch(CBaseEntity *pOther);
@@ -198,7 +196,6 @@ public:
 	void Explode3(TraceResult *pTrace, int bitsDamageType);
 	void SG_Explode(TraceResult *pTrace, int bitsDamageType);
 
-#ifdef REGAMEDLL_API
 	static CGrenade *ShootTimed_OrigFunc(entvars_t *pevOwner, VectorRef vecStart, VectorRef vecVelocity, float time);
 	static CGrenade *ShootTimed2_OrigFunc(entvars_t *pevOwner, VectorRef vecStart, VectorRef vecVelocity, float time, int iTeam, unsigned short usEvent);
 	static CGrenade *ShootSmokeGrenade_OrigFunc(entvars_t *pevOwner, VectorRef vecStart, VectorRef vecVelocity, float time, unsigned short usEvent);
@@ -211,7 +208,6 @@ public:
 	void Explode3_OrigFunc(TraceResult *pTrace, int bitsDamageType);
 	void Explode2_OrigFunc(TraceResult *pTrace, int bitsDamageType);
 	void SG_Detonate_OrigFunc();
-#endif
 
 	void EXPORT Smoke();
 	void EXPORT Smoke2();
@@ -305,9 +301,7 @@ public:
 	void CheckRespawn();
 
 public:
-#ifdef REGAMEDLL_API
 	CCSPlayerItem *CSPlayerItem() const;
-#endif
 
 	const char *pszAmmo1() const;
 	int iMaxAmmo1() const;
@@ -328,12 +322,10 @@ public:
 	int m_iId;							// WEAPON_???
 };
 
-#ifdef REGAMEDLL_API
 inline CCSPlayerItem *CBasePlayerItem::CSPlayerItem() const
 {
 	return reinterpret_cast<CCSPlayerItem *>(this->m_pEntity);
 }
-#endif
 
 // inventory items that
 class CCSPlayerWeapon;
@@ -397,14 +389,12 @@ public:
 	void InstantReload(bool bCanRefillBPAmmo = false);
 	bool DefaultShotgunReload(int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1 = nullptr, const char *pszReloadSound2 = nullptr);
 
-#ifdef REGAMEDLL_API
 	BOOL CanDeploy_OrigFunc();
 	BOOL DefaultDeploy_OrigFunc(char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, int skiplocal);
 	BOOL DefaultReload_OrigFunc(int iClipSize, int iAnim, float fDelay);
 	bool DefaultShotgunReload_OrigFunc(int iAnim, int iStartAnim, float fDelay, float fStartDelay, const char *pszReloadSound1, const char *pszReloadSound2);
 
 	CCSPlayerWeapon *CSPlayerWeapon() const;
-#endif
 
 public:
 	static TYPEDESCRIPTION m_SaveData[];
@@ -448,12 +438,10 @@ public:
 	float m_flLastFireTime;
 };
 
-#ifdef REGAMEDLL_API
 inline CCSPlayerWeapon *CBasePlayerWeapon::CSPlayerWeapon() const
 {
 	return reinterpret_cast<CCSPlayerWeapon *>(this->m_pEntity);
 }
-#endif
 
 class CWeaponBox: public CBaseEntity
 {
@@ -478,9 +466,7 @@ public:
 	BOOL PackWeapon(CBasePlayerItem *pWeapon);
 	BOOL PackAmmo(string_t iszName, int iCount);
 
-#ifdef REGAMEDLL_API
 	void SetModel_OrigFunc(const char *pszModelName);
-#endif
 
 public:
 	static TYPEDESCRIPTION m_SaveData[];
@@ -564,9 +550,7 @@ public:
 private:
 	unsigned short m_usFireUSP;
 
-#ifdef REGAMEDLL_API
 	float m_flBaseDamageSil;
-#endif
 };
 
 
@@ -932,27 +916,10 @@ public:
 	virtual void PrimaryAttack();
 	virtual void SecondaryAttack();
 	virtual void WeaponIdle();
-	virtual BOOL UseDecrement()
-	{
-	#ifdef CLIENT_WEAPONS
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
-	virtual BOOL IsPistol()
-	{
-	#ifdef REGAMEDLL_FIXES
-		return FALSE;
-	#else
-		// TODO: why the object flashbang is IsPistol?
-		return TRUE;
-	#endif
-	}
+	virtual BOOL UseDecrement() { return TRUE; }
+	virtual BOOL IsPistol() { return FALSE; }
 
-#ifdef REGAMEDLL_API
 	BOOL CanDeploy_OrigFunc();
-#endif
 
 public:
 	bool ShieldSecondaryFire(int iUpAnim, int iDownAnim);
@@ -1006,7 +973,6 @@ public:
 private:
 	unsigned short m_usFireG3SG1;
 };
-
 
 const float GLOCK18_MAX_SPEED     = 250.0f;
 const float GLOCK18_DAMAGE        = 25.0f;
@@ -1074,7 +1040,6 @@ public:
 	bool m_bBurstFire;
 };
 
-
 const float HEGRENADE_MAX_SPEED        = 250.0f;
 const float HEGRENADE_MAX_SPEED_SHIELD = 180.0f;
 
@@ -1101,18 +1066,9 @@ public:
 	virtual void PrimaryAttack();
 	virtual void SecondaryAttack();
 	virtual void WeaponIdle();
-	virtual BOOL UseDecrement()
-	{
-	#ifdef CLIENT_WEAPONS
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
+	virtual BOOL UseDecrement() { return TRUE; }
 
-#ifdef REGAMEDLL_API
 	BOOL CanDeploy_OrigFunc();
-#endif
 
 public:
 	bool ShieldSecondaryFire(int iUpAnim, int iDownAnim);
@@ -1122,7 +1078,6 @@ public:
 public:
 	unsigned short m_usCreateExplosion;
 };
-
 
 const float KNIFE_BODYHIT_VOLUME   = 128.0f;
 const float KNIFE_WALLHIT_VOLUME   = 512.0f;
@@ -1193,7 +1148,6 @@ public:
 	unsigned short m_usKnife;
 };
 
-
 const float M249_MAX_SPEED     = 220.0f;
 const float M249_DAMAGE        = 32.0f;
 const float M249_RANGE_MODIFER = 0.97f;
@@ -1220,14 +1174,7 @@ public:
 	virtual void PrimaryAttack();
 	virtual void Reload();
 	virtual void WeaponIdle();
-	virtual BOOL UseDecrement()
-	{
-	#ifdef CLIENT_WEAPONS
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
+	virtual BOOL UseDecrement() { return TRUE; }
 
 public:
 	void M249Fire(float flSpread, float flCycleTime, BOOL fUseAutoAim);
@@ -1238,7 +1185,6 @@ public:
 private:
 	unsigned short m_usFireM249;
 };
-
 
 const float M3_MAX_SPEED   = 230.0f;
 const float M3_DAMAGE      = 20.0f;
@@ -1285,7 +1231,6 @@ public:
 private:
 	unsigned short m_usFireM3;
 };
-
 
 const float M4A1_MAX_SPEED         = 230.0f;
 const float M4A1_DAMAGE            = 32.0f;
@@ -1343,11 +1288,8 @@ public:
 private:
 	unsigned short m_usFireM4A1;
 
-#ifdef REGAMEDLL_API
 	float m_flBaseDamageSil;
-#endif
 };
-
 
 const float MAC10_MAX_SPEED     = 250.0f;
 const float MAC10_DAMAGE        = 29.0f;
@@ -1376,14 +1318,7 @@ public:
 	virtual void PrimaryAttack();
 	virtual void Reload();
 	virtual void WeaponIdle();
-	virtual BOOL UseDecrement()
-	{
-	#ifdef CLIENT_WEAPONS
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
+	virtual BOOL UseDecrement() { return TRUE; }
 
 public:
 	void MAC10Fire(float flSpread, float flCycleTime, BOOL fUseAutoAim);
@@ -1394,7 +1329,6 @@ public:
 private:
 	unsigned short m_usFireMAC10;
 };
-
 
 const float P228_MAX_SPEED     = 250.0f;
 const float P228_DAMAGE        = 32.0f;
@@ -1438,14 +1372,7 @@ public:
 	virtual void SecondaryAttack();
 	virtual void Reload();
 	virtual void WeaponIdle();
-	virtual BOOL UseDecrement()
-	{
-	#ifdef CLIENT_WEAPONS
-		return TRUE;
-	#else
-		return FALSE;
-	#endif
-	}
+	virtual BOOL UseDecrement() { return TRUE; }
 	virtual BOOL IsPistol() { return TRUE; }
 
 public:
@@ -1459,7 +1386,6 @@ public:
 private:
 	unsigned short m_usFireP228;
 };
-
 
 const float P90_MAX_SPEED     = 245.0f;
 const float P90_DAMAGE        = 21.0f;
@@ -1490,11 +1416,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1506,7 +1428,6 @@ public:
 private:
 	unsigned short m_usFireP90;
 };
-
 
 const float SCOUT_MAX_SPEED      = 260.0f;
 const float SCOUT_MAX_SPEED_ZOOM = 220.0f;
@@ -1538,11 +1459,7 @@ public:
 	virtual void WeaponIdle();
 	virtual BOOL UseDecrement()
 	{
-	#ifdef CLIENT_WEAPONS
 		return TRUE;
-	#else
-		return FALSE;
-	#endif
 	}
 
 public:
@@ -1552,7 +1469,6 @@ public:
 private:
 	unsigned short m_usFireScout;
 };
-
 
 const float SMOKEGRENADE_MAX_SPEED        = 250.0f;
 const float SMOKEGRENADE_MAX_SPEED_SHIELD = 180.0f;
@@ -1589,9 +1505,7 @@ public:
 	#endif
 	}
 
-#ifdef REGAMEDLL_API
 	BOOL CanDeploy_OrigFunc();
-#endif
 
 public:
 	bool ShieldSecondaryFire(int iUpAnim, int iDownAnim);
@@ -1993,9 +1907,7 @@ public:
 	int m_iShell;
 	int iShellOn;
 
-#ifdef REGAMEDLL_API
 	float m_flBaseDamageBurst;
-#endif
 };
 
 extern short g_sModelIndexLaser;

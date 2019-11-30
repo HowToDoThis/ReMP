@@ -216,15 +216,8 @@ public:
 
 	void BotThink();
 
-#ifdef REGAMEDLL_FIXES
 	BOOL IsNetClient() { return FALSE; }
-#else
-	// The ambiguous function because there is a virtual function in inherited classes.
-	bool IsNetClient() const { return false; }
 
-	int Save(CSave &save) const;
-	int Restore(CRestore &restore) const;
-#endif
 	// return our personality profile
 	const BotProfile *GetProfile() const { return m_profile; }
 
@@ -236,11 +229,6 @@ public:
 	BotRelationshipTeam BotRelationship(CBasePlayer *pTarget) const;
 
 protected:
-#ifndef REGAMEDLL_FIXES
-	// Do a "client command" - useful for invoking menu choices, etc.
-	void ClientCommand(const char *cmd, const char *arg1 = nullptr, const char *arg2 = nullptr, const char *arg3 = nullptr);
-#endif
-
 	// the "personality" profile of this bot
 	const BotProfile *m_profile;
 
@@ -408,10 +396,8 @@ inline bool CBot::IsPlayerLookingAtMe(CBasePlayer *pOther) const
 
 inline CBot::BotRelationshipTeam CBot::BotRelationship(CBasePlayer *pTarget) const
 {
-#ifdef REGAMEDLL_ADD
 	if (CSGameRules()->IsFreeForAll())
 		return BOT_ENEMY;
-#endif
 
 	return pTarget->m_iTeam == m_iTeam ? BOT_TEAMMATE : BOT_ENEMY;
 }

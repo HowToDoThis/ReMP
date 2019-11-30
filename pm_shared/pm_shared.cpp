@@ -1337,11 +1337,9 @@ qboolean PM_InWater()
 // Sets pmove->waterlevel and pmove->watertype values.
 qboolean PM_CheckWater()
 {
-#ifdef REGAMEDLL_FIXES
 	// do not check for dead
 	if (pmove->dead || pmove->deadflag != DEAD_NO)
 		return FALSE;
-#endif
 
 	vec3_t point;
 	int cont;
@@ -1795,11 +1793,8 @@ void PM_FixPlayerCrouchStuck(int direction)
 
 void PM_UnDuck()
 {
-#ifdef REGAMEDLL_ADD
 	if (unduck_method.value)
-#endif
 	{
-#ifdef REGAMEDLL_FIXES
 		// if ducking isn't finished yet, so don't unduck
 		if (pmove->bInDuck || !(pmove->flags & FL_DUCKING))
 		{
@@ -1809,7 +1804,6 @@ void PM_UnDuck()
 			pmove->view_ofs[2] = PM_VEC_VIEW;
 			return;
 		}
-#endif // #ifdef REGAMEDLL_FIXES
 	}
 
 	pmtrace_t trace;
@@ -1819,13 +1813,9 @@ void PM_UnDuck()
 
 	if (pmove->onground != -1)
 	{
-#ifdef REGAMEDLL_FIXES
 		vec3_t offset;
 		VectorSubtract(pmove->player_mins[1], pmove->player_mins[0], offset);
 		VectorAdd(newOrigin, offset, newOrigin);
-#else
-		newOrigin[2] += 18.0;
-#endif
 	}
 
 	trace = pmove->PM_PlayerTrace(newOrigin, newOrigin, PM_NORMAL, -1);
@@ -1880,7 +1870,6 @@ void PM_Duck()
 		pmove->oldbuttons &= ~IN_DUCK;
 	}
 
-#ifdef REGAMEDLL_ADD
 	// Prevent ducking if the iuser3 variable is contain PLAYER_PREVENT_DUCK
 	if ((pmove->iuser3 & PLAYER_PREVENT_DUCK) == PLAYER_PREVENT_DUCK)
 	{
@@ -1892,7 +1881,6 @@ void PM_Duck()
 
 		return;
 	}
-#endif
 
 	if (pmove->dead || (!(pmove->cmd.buttons & IN_DUCK) && !pmove->bInDuck && !(pmove->flags & FL_DUCKING)))
 	{
@@ -1925,13 +1913,9 @@ void PM_Duck()
 				// HACKHACK - Fudge for collision bug - no time to fix this properly
 				if (pmove->onground != -1)
 				{
-#ifdef REGAMEDLL_FIXES
 					vec3_t newOrigin;
 					VectorSubtract(pmove->player_mins[1], pmove->player_mins[0], newOrigin);
 					VectorSubtract(pmove->origin, newOrigin, pmove->origin);
-#else
-					pmove->origin[2] = pmove->origin[2] - 18.0;
-#endif
 
 					// See if we are stuck?
 					PM_FixPlayerCrouchStuck(STUCK_MOVEUP);
@@ -1950,11 +1934,7 @@ void PM_Duck()
 					duckFraction = PM_SplineFraction(time, (1.0 / TIME_TO_DUCK));
 				}
 
-#ifdef REGAMEDLL_FIXES
 				float fMore = (pmove->player_mins[1][2] - pmove->player_mins[0][2]);
-#else
-				float fMore = (PM_VEC_DUCK_HULL_MIN - PM_VEC_HULL_MIN);
-#endif
 
 				pmove->view_ofs[2] = ((PM_VEC_DUCK_VIEW - fMore) * duckFraction) + (PM_VEC_VIEW * (1 - duckFraction));
 			}
@@ -2400,13 +2380,11 @@ void PM_Jump()
 		return;
 	}
 
-#ifdef REGAMEDLL_ADD
 	// Prevent jumping if the iuser3 variable is contain PLAYER_PREVENT_JUMP
 	if ((pmove->iuser3 & PLAYER_PREVENT_JUMP) == PLAYER_PREVENT_JUMP)
 	{
 		return;
 	}
-#endif
 
 	// No more effect
 	// in air, so no effect
@@ -2444,7 +2422,6 @@ void PM_Jump()
 		PM_PlayStepSound(PM_MapTextureTypeStepType(pmove->chtexturetype), fvol);
 	}
 
-#ifdef REGAMEDLL_ADD
 	// See if user can super long jump?
 	bool cansuperjump = (pmove->PM_Info_ValueForKey(pmove->physinfo, "slj")[0] == '1');
 
@@ -2471,7 +2448,6 @@ void PM_Jump()
 		}
 	}
 	else
-#endif
 	{
 		// NOTE: don't do it in .f (float)
 		pmove->velocity[2] = Q_sqrt(2.0 * 800.0f * 45.0f);
@@ -2673,11 +2649,7 @@ void PM_DropPunchAngle(vec_t *punchangle)
 
 	len = VectorNormalize(punchangle);
 	len -= (10.0 + len * 0.5) * pmove->frametime;
-#ifdef PLAY_GAMEDLL
 	len = Q_max(len, 0.0);
-#else
-	len = Q_max(len, 0.0f);
-#endif
 	VectorScale(punchangle, len, punchangle);
 }
 
@@ -2733,13 +2705,11 @@ void PM_CheckParameters()
 	// Set dead player view_offset
 	if (pmove->dead)
 	{
-#ifdef REGAMEDLL_FIXES
 		if (pmove->bInDuck)
 		{
 			PM_UnDuck();
 			pmove->bInDuck = FALSE;
 		}
-#endif
 
 		pmove->view_ofs[2] = PM_DEAD_VIEWHEIGHT;
 	}
@@ -2860,11 +2830,7 @@ void PM_PlayerMove(qboolean server)
 	g_onladder = FALSE;
 
 	// Don't run ladder code if dead or on a train
-	if (!pmove->dead && !(pmove->flags & FL_ONTRAIN)
-#ifdef REGAMEDLL_ADD
-		&& !(pmove->iuser3 & PLAYER_PREVENT_CLIMB)
-#endif
-		)
+	if (!pmove->dead && !(pmove->flags & FL_ONTRAIN) && !(pmove->iuser3 & PLAYER_PREVENT_CLIMB))
 	{
 		pLadder = PM_Ladder();
 
