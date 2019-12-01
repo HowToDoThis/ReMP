@@ -333,7 +333,6 @@
     <ClCompile Include="..\dlls\soundent.cpp" />
     <ClCompile Include="..\dlls\spectator.cpp" />
     <ClCompile Include="..\dlls\subs.cpp" />
-    <ClCompile Include="..\dlls\Test.cpp" />
     <ClCompile Include="..\dlls\training_gamerules.cpp" />
     <ClCompile Include="..\dlls\triggers.cpp" />
     <ClCompile Include="..\dlls\tutor.cpp" />

@@ -899,9 +899,6 @@
     <ClCompile Include="..\dlls\subs.cpp">
       <Filter>dlls</Filter>
     </ClCompile>
-    <ClCompile Include="..\dlls\Test.cpp">
-      <Filter>dlls</Filter>
-    </ClCompile>
     <ClCompile Include="..\dlls\training_gamerules.cpp">
       <Filter>dlls</Filter>
     </ClCompile>
