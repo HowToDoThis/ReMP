@@ -94,7 +94,7 @@ cvar_t sk_scientist_heal1    = { "sk_scientist_heal1", "0", 0, 0.0f, nullptr };
 cvar_t sk_scientist_heal2    = { "sk_scientist_heal2", "0", 0, 0.0f, nullptr };
 cvar_t sk_scientist_heal3    = { "sk_scientist_heal3", "0", 0, 0.0f, nullptr };
 
-cvar_t game_version          = { "game_version", APP_VERSION, FCVAR_SERVER, 0.0f, nullptr };
+cvar_t game_version          = { "game_version", Version, FCVAR_SERVER, 0.0f, nullptr };
 cvar_t maxmoney              = { "mp_maxmoney", "16000", FCVAR_SERVER, 0.0f, nullptr };
 cvar_t round_infinite        = { "mp_round_infinite", "0", FCVAR_SERVER, 0.0f, nullptr };
 cvar_t hegrenade_penetration = { "mp_hegrenade_penetration", "0", 0, 0.0f, nullptr };
@@ -144,10 +144,8 @@ void GameDLL_Version_f()
 	if (Q_stricmp(CMD_ARGV(1), "version") != 0)
 		return;
 
-	// print version
-	CONSOLE_ECHO("ReGameDLL version: " APP_VERSION "\n");
-	CONSOLE_ECHO("Build date: " APP_COMMIT_TIME " " APP_COMMIT_DATE "\n");
-	CONSOLE_ECHO("Build from: " APP_COMMIT_URL APP_COMMIT_SHA "\n");
+	CONSOLE_ECHO("ReMP version: " Version "\n");
+	CONSOLE_ECHO("Build date: " __DATE__ ", (GMT+8)" __TIME__ "\n");
 }
 
 void GameDLL_EndRound_f()
@@ -263,9 +261,7 @@ void EXT_FUNC GameDLLInit()
 	CVAR_REGISTER(&show_radioicon);
 
 	if (!AreRunningCZero())
-	{
 		CVAR_REGISTER(&show_scenarioicon);
-	}
 	
 	CVAR_REGISTER(&old_bomb_defused_sound);
 	CVAR_REGISTER(&item_staytime);
@@ -289,7 +285,8 @@ void EXT_FUNC GameDLLInit()
 	CVAR_REGISTER(&radio_maxinround);
 
 	// print version
-	CONSOLE_ECHO("ReGameDLL version: " APP_VERSION "\n");
+	CONSOLE_ECHO("ReMP version: " Version "\n");
+	CONSOLE_ECHO("Build date: " __DATE__ ", (GMT+8)" __TIME__ "\n");
 
 	Bot_RegisterCVars();
 	Tutor_RegisterCVars();

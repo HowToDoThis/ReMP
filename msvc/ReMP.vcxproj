@@ -220,6 +220,7 @@
     <ClInclude Include="..\remp\regamedll_const.h" />
     <ClInclude Include="..\remp\remp.h" />
     <ClInclude Include="..\remp\sse_mathfun.h" />
+    <ClInclude Include="..\remp\version.h" />
     <ClInclude Include="..\shared\bitvec.h" />
     <ClInclude Include="..\shared\bot\bot.h" />
     <ClInclude Include="..\shared\bot\bot_constants.h" />
@@ -469,7 +470,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
+      <ModuleDefinitionFile>mp.def</ModuleDefinitionFile>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike 1.6\cstrike\dlls\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -481,7 +488,7 @@
       </SDLCheck>
       <ConformanceMode>
       </ConformanceMode>
-      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\common;..\dlls;..\engine;..\pm_shared;..\public;..\remp;..\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DiagnosticsFormat>Classic</DiagnosticsFormat>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <StringPooling>true</StringPooling>
@@ -497,13 +504,15 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>
-      </EnableCOMDATFolding>
-      <OptimizeReferences>
-      </OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <MinimumRequiredVersion>5.01</MinimumRequiredVersion>
+      <ModuleDefinitionFile>mp.def</ModuleDefinitionFile>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike 1.6\cstrike\dlls\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

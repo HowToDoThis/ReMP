@@ -735,6 +735,9 @@
     <ClInclude Include="..\remp\API\CSPlayerWeapon.h">
       <Filter>remp\API</Filter>
     </ClInclude>
+    <ClInclude Include="..\remp\version.h">
+      <Filter>remp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\dlls\tutor_cs_states.cpp">
