@@ -28,13 +28,9 @@
 
 #pragma once
 
-#ifdef PLAY_GAMEDLL
 // NOTE: In some cases we need high precision of floating-point,
 // so use double instead of float, otherwise unittest will fail
 typedef double real_t;
-#else
-typedef float real_t;
-#endif
 
 typedef float vec_t;
 typedef vec_t vec3_t[3];

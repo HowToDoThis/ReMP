@@ -808,7 +808,7 @@ BOOL EXT_FUNC CBasePlayer::__API_HOOK(TakeDamage)(entvars_t *pevInflictor, entva
 	int armorHit = 0;
 	CBasePlayer *pAttack = nullptr;
 
-	CBaseEntity *pAttacker = GET_PRIVATE<CBaseEntity>(ENT(pevAttacker));
+	CBaseEntity* pAttacker = CBaseEntity::Instance(pevAttacker);
 
 	// don't take damage if victim has protection
 	if (((pAttacker && pAttacker->IsPlayer()) || (bitsDamageType & DMG_FALL))  && CSPlayer()->GetProtectionState() == CCSPlayer::ProtectionSt_Active)
@@ -974,8 +974,6 @@ BOOL EXT_FUNC CBasePlayer::__API_HOOK(TakeDamage)(entvars_t *pevInflictor, entva
 
 		return bTookDamage;
 	}
-
-	CBaseEntity *pAttacker = CBaseEntity::Instance(pevAttacker);
 
 	if (!g_pGameRules->FPlayerCanTakeDamage(this, pAttacker) && !FClassnameIs(pevInflictor, "grenade"))
 	{

@@ -56,3 +56,7 @@
 // API
 #include "API/CSInterfaces.h"
 #include "API/CAPI_Impl.h"
+
+
+// utl stuff dunno why not included
+#include "utlsymbol.h"

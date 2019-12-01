@@ -737,15 +737,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\common\interface.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\common\parsemsg.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\common\stdc++compat.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="..\dlls\tutor_cs_states.cpp">
       <Filter>dlls</Filter>
     </ClCompile>
@@ -1142,13 +1133,7 @@
     <ClCompile Include="..\dlls\wpn_shared\wpn_xm1014.cpp">
       <Filter>dlls\Weapons</Filter>
     </ClCompile>
-    <ClCompile Include="..\engine\sys_shared.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
     <ClCompile Include="..\engine\unicode_strtools.cpp">
-      <Filter>engine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\engine\crc32c.cpp">
       <Filter>engine</Filter>
     </ClCompile>
     <ClCompile Include="..\pm_shared\pm_math.cpp">
@@ -1161,9 +1146,6 @@
       <Filter>pm_shared</Filter>
     </ClCompile>
     <ClCompile Include="..\public\MemPool.cpp">
-      <Filter>public</Filter>
-    </ClCompile>
-    <ClCompile Include="..\public\utlbuffer.cpp">
       <Filter>public</Filter>
     </ClCompile>
     <ClCompile Include="..\public\utlsymbol.cpp">

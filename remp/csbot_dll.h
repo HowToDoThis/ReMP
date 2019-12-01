@@ -16,6 +16,7 @@
 #include "bot/nav_node.h"
 #include "bot/nav_area.h"
 #include "bot/nav_path.h"
+#include "bot/nav_file.h"
 
 #include "hostage/hostage.h"
 #include "hostage/hostage_localnav.h"

@@ -126,27 +126,7 @@ void *Sys_GetProcAddress(void *pModuleHandle, const char *pName)
 // Output : opaque handle to the module (hides system dependency)
 CSysModule *Sys_LoadModule(const char *pModuleName)
 {
-#ifdef _WIN32
 	HMODULE hDLL = LoadLibrary(pModuleName);
-#else
-	HMODULE hDLL  = nullptr;
-	char szAbsoluteModuleName[1024];
-	if (pModuleName[0] != '/')
-	{
-		char szCwd[1024];
-		getcwd(szCwd, sizeof(szCwd));
-		if (szCwd[strlen(szCwd) - 1] == '/')
-			szCwd[strlen(szCwd) - 1] = '\0';
-
-		_snprintf(szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s/%s", szCwd, pModuleName);
-		hDLL = dlopen(szAbsoluteModuleName, RTLD_NOW);
-	}
-	else
-	{
-		_snprintf(szAbsoluteModuleName, sizeof(szAbsoluteModuleName), "%s", pModuleName);
-		hDLL = dlopen(pModuleName, RTLD_NOW);
-	}
-#endif // _WIN32
 
 	if (!hDLL)
 	{

@@ -13,7 +13,6 @@
 //    for legacy code). In this case, you need to make a new version name for your new interface, and make a wrapper interface and
 //    expose it for the old interface.
 
-#ifndef INTERFACE_H
 #define INTERFACE_H
 
 #ifndef _WIN32
@@ -122,5 +121,3 @@ extern CSysModule *Sys_LoadModule(const char *pModuleName);
 extern void Sys_UnloadModule(CSysModule *pModule);
 extern CreateInterfaceFn Sys_GetFactory(CSysModule *pModule);
 extern void *InitializeInterface(char const *interfaceName, CreateInterfaceFn *factoryList, int numFactories);
-
-#endif

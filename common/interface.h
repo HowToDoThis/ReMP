@@ -20,8 +20,7 @@
 //    for legacy code). In this case, you need to make a new version name for your new interface, and make a wrapper interface and 
 //    expose it for the old interface.
 
-#ifndef INTERFACE_H
-#define INTERFACE_H
+#ifdef FuckCommonInterface_H
 
 #ifdef __cplusplus
 
