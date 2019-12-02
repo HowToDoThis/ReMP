@@ -20,10 +20,6 @@ C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pEnginefuncsTable, global
 
 	FileSystem_Init();
 	Regamedll_Game_Init();
-
-	// so if debug build, we enable the developer mode?
-	if (_DEBUG)
-		g_engfuncs.pfnServerCommand("developer 1");
 }
 
 // DLL entry point
