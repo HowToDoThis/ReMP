@@ -2025,7 +2025,6 @@ char *CArmoury::m_ItemModels[] = {
 	"models/w_kevlar.mdl",
 	"models/w_assault.mdl",
 	"models/w_smokegrenade.mdl",
-
 	"models/w_shield.mdl",
 	"models/w_famas.mdl",
 	"models/w_sg550.mdl",

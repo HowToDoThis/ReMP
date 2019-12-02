@@ -30,12 +30,14 @@
 
 void Regamedll_Game_Init()
 {
-	g_bIsBeta        = UTIL_IsBeta();
-	g_bIsCzeroGame   = UTIL_IsGame("czero");
+	//g_bIsBeta        = UTIL_IsBeta();
+	g_bIsBeta = true;			// seems like is ReGameDll Beta Function or Unfinished Function, use it first
+	//g_bIsCzeroGame   = UTIL_IsGame("czero");
+	g_bIsCzeroGame = false;		// we are not czero, so we directly fuck it
 	//g_bAllowedCSBot  = UTIL_AreBotsAllowed();    // determine whether bots can be used or not
 	g_bAllowedCSBot = true;		// we directly allowed Bot
 	//g_bHostageImprov = UTIL_AreHostagesImprov(); // determine whether hostage improv can be used or not
-	g_bHostageImprov = false;	// same as above
+	g_bHostageImprov = false;	// we dont improve hostage?
 
 	WeaponInfoReset();
 }

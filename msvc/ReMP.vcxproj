@@ -391,6 +391,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\remp\ReMP.cpp" />
     <ClCompile Include="..\remp\sse_mathfun.cpp" />
     <ClCompile Include="..\shared\bot\bot.cpp" />
     <ClCompile Include="..\shared\bot\bot_manager.cpp" />

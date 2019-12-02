@@ -10,13 +10,21 @@ globalvars_t *gpGlobals;
 C_DLLEXPORT void WINAPI GiveFnptrsToDll(enginefuncs_t *pEnginefuncsTable, globalvars_t *pGlobals)
 {
 	Q_memcpy(&g_engfuncs, pEnginefuncsTable, sizeof(enginefuncs_t));
+	Q_memcpy(&gEngfuncReMP, &g_engfuncs, sizeof(enginefuncs_t));
 	gpGlobals = pGlobals;
+
+	// now let us hook some function
+	g_engfuncs.pfnPrecacheModel = ReMP_PrecacheModel;
+	g_engfuncs.pfnPrecacheSound = ReMP_PrecacheSound;
+	g_engfuncs.pfnPrecacheEvent = ReMP_PrecacheEvent;
 
 	FileSystem_Init();
 	Regamedll_Game_Init();
-}
 
-#ifdef _WIN32
+	// so if debug build, we enable the developer mode?
+	if (_DEBUG)
+		g_engfuncs.pfnServerCommand("developer 1");
+}
 
 // DLL entry point
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
@@ -30,15 +38,3 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 
 	return TRUE;
 }
-
-#else // _WIN32
-
-void __attribute__((constructor)) DllMainLoad()
-{
-}
-
-void __attribute__((destructor)) DllMainUnload()
-{
-}
-
-#endif // _WIN32

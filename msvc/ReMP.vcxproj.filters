@@ -1220,5 +1220,8 @@
     <ClCompile Include="..\dlls\world.cpp">
       <Filter>dlls\Misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\remp\ReMP.cpp">
+      <Filter>remp</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
