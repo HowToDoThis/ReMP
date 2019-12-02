@@ -285,8 +285,8 @@ void EXT_FUNC GameDLLInit()
 	CVAR_REGISTER(&radio_maxinround);
 
 	// print version
-	CONSOLE_ECHO("ReMP version: " Version "\n");
-	CONSOLE_ECHO("Build date: " __DATE__ ", (GMT+8)" __TIME__ "\n");
+	CONSOLE_ECHO("\n	ReMP version: " Version "\n");
+	CONSOLE_ECHO("	Build date: " __DATE__ ", (GMT+8) " __TIME__ "\n\n");
 
 	Bot_RegisterCVars();
 	Tutor_RegisterCVars();

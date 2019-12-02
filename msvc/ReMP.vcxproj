@@ -474,7 +474,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike 1.6\cstrike\dlls\"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike v23b\cstrike\dlls"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -510,7 +510,7 @@
       <ModuleDefinitionFile>mp.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike 1.6\cstrike\dlls\"</Command>
+      <Command>copy "$(SolutionDir)$(Configuration)\mp.dll" "D:\Counter-Strike v23b\cstrike\dlls"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
