@@ -46,7 +46,6 @@ bool IsBotSpeaking()
 	return false;
 }
 
-
 bool CHalfLifeMultiplay::IsInCareerRound()
 {
 	return IsMatchStarted() ? false : true;
@@ -55,9 +54,7 @@ bool CHalfLifeMultiplay::IsInCareerRound()
 void CHalfLifeMultiplay::SetCareerMatchLimit(int minWins, int winDifference)
 {
 	if (!IsCareer())
-	{
 		return;
-	}
 
 	if (!m_iCareerMatchWins)
 	{
@@ -76,9 +73,7 @@ LINK_HOOK_CLASS_VOID_CUSTOM_CHAIN2(CHalfLifeMultiplay, CSGameRules, ServerDeacti
 void EXT_FUNC CHalfLifeMultiplay::__API_HOOK(ServerDeactivate)()
 {
 	if (!IsCareer())
-	{
 		return;
-	}
 
 	CVAR_SET_FLOAT("pausable", 0);
 	CVAR_SET_FLOAT("mp_windifference", 1);

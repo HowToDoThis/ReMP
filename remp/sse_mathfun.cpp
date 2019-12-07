@@ -351,8 +351,6 @@ v4sf cos_ps(v4sf x) { // any x
 	return y;
 }
 
-
-
 /* since sin_ps and cos_ps are almost identical, sincos_ps could replace both of them..
 it is almost as fast, and gives you a free cosine with your sine */
 void sincos_ps(v4sf x, v4sf *s, v4sf *c) {
